@@ -1,60 +1,80 @@
 import java.util.Scanner;
 
 public class SigmaBot {
-    private String[] todo = new String[100]; 
-    private int numItems = 0;
+    public static final String GREETING = "\t Hello! I'm SigmaBot\r\n" + "\t What can I do for you?\r\n";
+    public static final String GOODBYE = "\t Bye. Hope to see you again soon!\r\n";
+    public static final String SEP = "\t____________________________________________________________\r\n";
+
+    private Task[] todo = new Task[100]; 
+    private int numTask = 0;
 
     public SigmaBot() { 
     }
 
-    public String[] addItem(String item) {
-        todo[numItems] = item;
-        numItems += 1;
+    public Task[] addItem(Task item) {
+        todo[numTask] = item;
+        numTask += 1;
 
         return todo;
     }
 
-    public String[] getTodo() {
+    public Task[] getTodo() {
         return this.todo;
     } 
 
-    public int getNumItems() {
-        return this.numItems;
+    public int getNumTask() {
+        return this.numTask;
     } 
 
-    public String echo(Scanner scanner) {
-        String msg = scanner.nextLine();
-        
-        return msg;
+    public void markTask(int i) {
+        this.todo[i].mark();
     }
+
+    public void unmarkTask(int i) {
+        this.todo[i].unmark();
+    }
+
+    public Task nextTask(Scanner scanner) {
+        String msg = scanner.nextLine().toLowerCase();
+        Task task = new Task(msg);
+
+        return task;
+    }
+
+    public void printTasks() {
+        System.out.print(SEP);
+        System.out.println("\t Here are the tasks in your list:");
+        for (int i = 0; i < getNumTask(); i += 1) {
+            System.out.println("\t " + String.valueOf(i + 1) + "." + this.todo[i]);
+        }       
+        System.out.println(SEP);
+}
 
     
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         SigmaBot bot = new SigmaBot();
-
-        String greeting = "\tHello! I'm SigmaBot\r\n" + "\tWhat can I do for you?\r\n";
-        String goodbye = "\tBye. Hope to see you again soon!\r\n";
-        String sep = "\t____________________________________________________________\r\n";
         
-        System.out.println(sep + greeting + sep);
+        System.out.println(SEP + GREETING + SEP);
     
-        String msg = bot.echo(scanner);
-        while (!msg.toLowerCase().equals("bye")) {
-            if (msg.toLowerCase().equals("list")) {
-                System.out.print(sep);
-                for (int i = 0; i < bot.getNumItems(); i += 1) {
-                    System.out.println("\t" + String.valueOf(i + 1) + ". " + bot.todo[i]);
-                }       
-                System.out.println(sep);
+        Task task = bot.nextTask(scanner);
+        while (!task.getDescription().equals("bye")) {
+            if (task.getDescription().equals("list")) {
+                bot.printTasks();
+            } else if (task.getDescription().split(" ")[0].equals("mark")) {
+                bot.markTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
+                bot.printTasks();
+            } else if (task.getDescription().split(" ")[0].equals("unmark")) {
+                bot.unmarkTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
+                bot.printTasks();
             } else {
-                bot.addItem(msg);
-                System.out.println(sep + "\t added: " + msg + "\r\n" + sep);
+                bot.addItem(task);
+                System.out.println(SEP + "\t added: " + task.getDescription() + "\r\n" + SEP);
             }
 
-            msg = bot.echo(scanner);
+            task = bot.nextTask(scanner);
         } 
 
-        System.out.println(sep + goodbye + sep);
+        System.out.println(SEP + GOODBYE + SEP);
     }
 }
