@@ -1,8 +1,11 @@
 public class DeadlineTask extends TodoTask {
     protected String deadline;
 
-    public DeadlineTask(String description, String deadline) {
+    public DeadlineTask(String description, String deadline) throws SigmaBotException{
         super(description);
+        if (deadline.equals("")) {
+            throw new SigmaBotException("Hey, theres no deadline!");
+        }
         this.deadline = deadline;
     }
 

@@ -34,13 +34,19 @@ public class SigmaBot {
         this.todo[i].unmark();
     }
 
-    public Task nextTask(Scanner scanner) {
+    public Task nextTask(Scanner scanner) throws SigmaBotException{
         String msg = scanner.nextLine().toLowerCase();
         String[] msg2 = msg.split(" ", 2);
         
         Task task = new Task(msg);
         if (msg2[0].equals("todo")) {
-            task = new TodoTask(msg2[1]);
+            // added testcase for todo with empty description 
+            if (msg2.length == 1) {
+                System.out.println(SEP + "     Hey! invalid description\n" + SEP);
+                task = nextTask(scanner);
+            } else { 
+                task = new TodoTask(msg2[1]);
+            }
         } else if (msg2[0].equals("deadline")) {
             String[] msg3 = msg2[1].split(" /by ", 2);
             task = new DeadlineTask(msg3[0], msg3[1]);
@@ -48,6 +54,10 @@ public class SigmaBot {
             String[] msg3 = msg2[1].split(" /from ", 2);
             String[] msg4 = msg3[1].split(" /to ", 2);
             task = new EventTask(msg3[0], msg4[0], msg4[1]);
+        } else if (!msg.equals("list") && !msg2[0].equals("mark") && !msg2[0].equals("unmark") && !msg.equals("bye")) {
+            // throw new SigmaBotException("Hey, that is not a valid command!"); 
+            System.out.println(SEP + "     Hey! that doesnt make any sense!\n" + SEP);
+            task = nextTask(scanner);
         }
 
         return task;
@@ -70,24 +80,28 @@ public class SigmaBot {
         System.out.println(SEP + GREETING + SEP);
     
         Task task = bot.nextTask(scanner);
-        while (!task.getDescription().equals("bye")) {
-            if (task.getDescription().equals("list")) {
-                bot.printTasks();
-            } else if (task.getDescription().split(" ")[0].equals("mark")) {
-                bot.markTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
-                bot.printTasks();
-            } else if (task.getDescription().split(" ")[0].equals("unmark")) {
-                bot.unmarkTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
-                bot.printTasks();
-            } 
-            else {
-                bot.addItem(task);
-                System.out.println(SEP + "     Got it. I've added this task:\n        " + //
-                         task + "\n     Now you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
-            }
+        try {
+            while (!task.getDescription().equals("bye")) {
+                if (task.getDescription().equals("list")) {
+                    bot.printTasks();
+                } else if (task.getDescription().split(" ")[0].equals("mark")) {
+                    bot.markTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
+                    bot.printTasks();
+                } else if (task.getDescription().split(" ")[0].equals("unmark")) {
+                    bot.unmarkTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
+                    bot.printTasks();
+                } 
+                else {
+                    bot.addItem(task);
+                    System.out.println(SEP + "     Got it. I've added this task:\n        " + //
+                            task + "\n     Now you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
+                }
 
-            task = bot.nextTask(scanner);
-        } 
+                task = bot.nextTask(scanner);
+            } 
+        } catch (SigmaBotException e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println(SEP + GOODBYE + SEP);
     }
