@@ -1,24 +1,31 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class SigmaBot {
     public static final String GREETING = "     Hello! I'm SigmaBot\r\n" + "     What can I do for you?\r\n";
     public static final String GOODBYE = "     Bye. Hope to see you again soon!\r\n";
     public static final String SEP = "    ____________________________________________________________\r\n";
 
-    private Task[] todo = new Task[100]; 
+    private ArrayList<Task> todo = new ArrayList<Task>(); 
     private int numTask = 0;
 
     public SigmaBot() { 
     }
 
-    public Task[] addItem(Task item) {
-        todo[numTask] = item;
+    public ArrayList<Task> addItem(Task item) {
+        todo.add(numTask, item);
         numTask += 1;
 
         return todo;
     }
+    
+    public Task deleteItem(int i) {
+        numTask -= 1;
+        
+        return todo.remove(i);
+    }
 
-    public Task[] getTodo() {
+    public ArrayList<Task> getTodo() {
         return this.todo;
     } 
 
@@ -27,11 +34,11 @@ public class SigmaBot {
     } 
 
     public void markTask(int i) {
-        this.todo[i].mark();
+        this.todo.get(i).mark();
     }
 
     public void unmarkTask(int i) {
-        this.todo[i].unmark();
+        this.todo.get(i).unmark();
     }
 
     public Task nextTask(Scanner scanner) throws SigmaBotException{
@@ -54,7 +61,7 @@ public class SigmaBot {
             String[] msg3 = msg2[1].split(" /from ", 2);
             String[] msg4 = msg3[1].split(" /to ", 2);
             task = new EventTask(msg3[0], msg4[0], msg4[1]);
-        } else if (!msg.equals("list") && !msg2[0].equals("mark") && !msg2[0].equals("unmark") && !msg.equals("bye")) {
+        } else if (!msg.equals("list") && !msg2[0].equals("mark") && !msg2[0].equals("unmark") && !msg2[0].equals("delete") && !msg.equals("bye")) {
             // throw new SigmaBotException("Hey, that is not a valid command!"); 
             System.out.println(SEP + "     Hey! that doesnt make any sense!\n" + SEP);
             task = nextTask(scanner);
@@ -67,10 +74,10 @@ public class SigmaBot {
         System.out.print(SEP);
         System.out.println("     Here are the tasks in your list:");
         for (int i = 0; i < getNumTask(); i += 1) {
-            System.out.println("     " + String.valueOf(i + 1) + "." + this.todo[i]);
+            System.out.println("     " + String.valueOf(i + 1) + "." + this.todo.get(i));
         }       
         System.out.println(SEP);
-}
+    }
 
     
     public static void main(String[] args) {
@@ -90,6 +97,10 @@ public class SigmaBot {
                 } else if (task.getDescription().split(" ")[0].equals("unmark")) {
                     bot.unmarkTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
                     bot.printTasks();
+                } else if (task.getDescription().split(" ")[0].equals("delete")) {
+                    Task deleted = bot.deleteItem(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
+                    System.out.println(SEP + "     Noted. I've removed this task:\n        " + //
+                            deleted + "\n     Now you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
                 } 
                 else {
                     bot.addItem(task);
