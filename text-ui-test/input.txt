@@ -1,0 +1,5 @@
+todo buy grapes
+deadline dance tut /by tonight
+event swin /from morn /to evening
+list
+bye

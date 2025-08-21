@@ -1,9 +1,9 @@
 import java.util.Scanner;
 
 public class SigmaBot {
-    public static final String GREETING = "\t Hello! I'm SigmaBot\r\n" + "\t What can I do for you?\r\n";
-    public static final String GOODBYE = "\t Bye. Hope to see you again soon!\r\n";
-    public static final String SEP = "\t____________________________________________________________\r\n";
+    public static final String GREETING = "     Hello! I'm SigmaBot\r\n" + "     What can I do for you?\r\n";
+    public static final String GOODBYE = "     Bye. Hope to see you again soon!\r\n";
+    public static final String SEP = "    ____________________________________________________________\r\n";
 
     private Task[] todo = new Task[100]; 
     private int numTask = 0;
@@ -55,9 +55,9 @@ public class SigmaBot {
 
     public void printTasks() {
         System.out.print(SEP);
-        System.out.println("\t Here are the tasks in your list:");
+        System.out.println("     Here are the tasks in your list:");
         for (int i = 0; i < getNumTask(); i += 1) {
-            System.out.println("\t " + String.valueOf(i + 1) + "." + this.todo[i]);
+            System.out.println("     " + String.valueOf(i + 1) + "." + this.todo[i]);
         }       
         System.out.println(SEP);
 }
@@ -82,8 +82,8 @@ public class SigmaBot {
             } 
             else {
                 bot.addItem(task);
-                System.out.println(SEP + "\t Got it. I've added this task:\n\t    " + //
-                         task + "\n\t Now you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
+                System.out.println(SEP + "     Got it. I've added this task:\n        " + //
+                         task + "\n     Now you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
             }
 
             task = bot.nextTask(scanner);
