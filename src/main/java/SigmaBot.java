@@ -36,7 +36,19 @@ public class SigmaBot {
 
     public Task nextTask(Scanner scanner) {
         String msg = scanner.nextLine().toLowerCase();
+        String[] msg2 = msg.split(" ", 2);
+        
         Task task = new Task(msg);
+        if (msg2[0].equals("todo")) {
+            task = new TodoTask(msg2[1]);
+        } else if (msg2[0].equals("deadline")) {
+            String[] msg3 = msg2[1].split(" /by ", 2);
+            task = new DeadlineTask(msg3[0], msg3[1]);
+        } else if (msg2[0].equals("event")) {
+            String[] msg3 = msg2[1].split(" /from ", 2);
+            String[] msg4 = msg3[1].split(" /to ", 2);
+            task = new EventTask(msg3[0], msg4[0], msg4[1]);
+        }
 
         return task;
     }
@@ -67,9 +79,11 @@ public class SigmaBot {
             } else if (task.getDescription().split(" ")[0].equals("unmark")) {
                 bot.unmarkTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
                 bot.printTasks();
-            } else {
+            } 
+            else {
                 bot.addItem(task);
-                System.out.println(SEP + "\t added: " + task.getDescription() + "\r\n" + SEP);
+                System.out.println(SEP + "\t Got it. I've added this task:\n\t    " + //
+                         task + "\n\t Now you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
             }
 
             task = bot.nextTask(scanner);
