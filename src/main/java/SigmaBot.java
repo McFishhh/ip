@@ -11,6 +11,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 public class SigmaBot {
     public static final String GREETING = "Hello! I'm SigmaBot\r\n" + "What can I do for you?\r\n";
     public static final String GOODBYE = "Bye. Hope to see you again soon!\r\n";
@@ -34,7 +37,7 @@ public class SigmaBot {
 
     public ArrayList<Task> addItem(Task item) {
         todo.add(numTask, item);
-        newTodo.add(numTask, item);
+        newTodo.add(item);
         numTask += 1;
 
         return todo;
@@ -78,7 +81,7 @@ public class SigmaBot {
             }
         } else if (msgSplit[0].equals("deadline")) {
             String[] msg3 = msgSplit[1].split(" /by ", 2);
-            task = new DeadlineTask(msg3[0], msg3[1]);
+            task = new DeadlineTask(msg3[0], LocalDate.parse(msg3[1])); // deadline must be in LocalDate format 
         } else if (msgSplit[0].equals("event")) {
             String[] msg3 = msgSplit[1].split(" /from ", 2);
             String[] msg4 = msg3[1].split(" /to ", 2);
@@ -163,7 +166,8 @@ public class SigmaBot {
         }
 
         System.out.println(SEP + GREETING + SEP);
-    
+        
+        
         Task task = bot.nextTask(scanner);
         try {
             while (!task.getDescription().equals("bye")) {
@@ -179,11 +183,11 @@ public class SigmaBot {
                     bot.printTasks();
                 } else if (firstWord.equals("delete")) {
                     Task deleted = bot.deleteItem(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
-                    System.out.println(SEP + "Noted. I've removed this task:\n" + //
+                    System.out.println(SEP + "Noted. I've removed this task:\n" + 
                             deleted + "\nNow you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
                 } else {
                     bot.addItem(task);
-                    System.out.println(SEP + "Got it. I've added this task:\n" + //
+                    System.out.println(SEP + "Got it. I've added this task:\n" + 
                             task + "\nNow you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
                 }
 
