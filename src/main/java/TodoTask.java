@@ -4,6 +4,23 @@ public class TodoTask extends Task {
         super(description);
     }
 
+    public TodoTask(String description, boolean isDone) {
+        super(description, isDone);
+    }
+
+    public String getTaskIcon() {
+        return "T";
+    }
+
+    public String encodeSaveFormat() {
+        return this.getTaskIcon() + "," + this.isDone + "," + this.description;
+    }
+
+    public static TodoTask decodeSaveFormat(String encoded) {
+        String[] encodedSplit = encoded.split(",");
+        return new TodoTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]));
+    }
+
     @Override
     public String toString() {
         return "[T]" + "[" + this.getStatusIcon() + "] " + this.description;

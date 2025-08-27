@@ -1,19 +1,40 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.BufferedReader;
+
 public class SigmaBot {
     public static final String GREETING = "Hello! I'm SigmaBot\r\n" + "What can I do for you?\r\n";
     public static final String GOODBYE = "Bye. Hope to see you again soon!\r\n";
     public static final String SEP = "____________________________________________________________\r\n";
 
     private ArrayList<Task> todo = new ArrayList<Task>(); 
+    private ArrayList<Task> newTodo = new ArrayList<Task>();
     private int numTask = 0;
+
+    private String savePath = "saves/savedTasks.txt";
 
     public SigmaBot() { 
     }
 
+    public ArrayList<Task> addItemFromSave(Task item) {
+        todo.add(numTask, item);
+        numTask += 1;
+
+        return todo;
+    }
+
     public ArrayList<Task> addItem(Task item) {
         todo.add(numTask, item);
+        newTodo.add(numTask, item);
         numTask += 1;
 
         return todo;
@@ -45,7 +66,8 @@ public class SigmaBot {
         String msg = scanner.nextLine().toLowerCase();
         String[] msgSplit = msg.split(" ", 2);
         
-        Task task = new Task(msg);
+        // Task task = new Task(msg);
+        Task task = new TodoTask(msg);
         if (msgSplit[0].equals("todo")) {
             // added testcase for todo with empty description 
             if (msgSplit.length == 1) {
@@ -80,11 +102,66 @@ public class SigmaBot {
         System.out.println(SEP);
     }
 
+    private boolean loadTasks() throws IOException {
+        Path path = Paths.get(savePath);
+        
+        // check for existence of filepath 
+        if (!Files.exists(path)) {
+            System.out.println(SEP + "No existing save file :(\n" + SEP);
+            return false;
+        }
+
+        // read in files one line at a time and creates Tasks to add to todo
+        BufferedReader bufferReader = new BufferedReader(new FileReader(savePath));
+        String line;
+        while ((line = bufferReader.readLine()) != null) { 
+            String[] lineSplit = line.split(",");
+
+            if (lineSplit[0].equals("T")) {
+                addItemFromSave(TodoTask.decodeSaveFormat(line));
+            } else if (lineSplit[0].equals("D")) {
+                addItemFromSave(DeadlineTask.decodeSaveFormat(line));
+            } else if (lineSplit[0].equals("E")) {
+                addItemFromSave(EventTask.decodeSaveFormat(line));
+            }
+        }
+
+        System.out.println(SEP + "Successfully loaded tasks! :D\n" + SEP);
+        bufferReader.close();
+        return true;
+    }
+
+    private boolean saveTasks() throws IOException {
+        File file = new File(savePath);
+
+        // create new dir and file if it doesnt exist 
+        if (!Files.exists(Paths.get(savePath))) {
+            file.getParentFile().mkdir();
+            file.createNewFile();
+        }
+
+        // saves file to savePath
+        FileWriter fileWriter = new FileWriter(savePath, true);
+
+        for (Task task : newTodo) {
+            fileWriter.write(task.encodeSaveFormat() + "\n");
+        }
+
+        System.out.println(SEP + "Successfully saved tasks!\n" + SEP);
+        fileWriter.close();
+        return true;
+    }
     
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         SigmaBot bot = new SigmaBot();
-        
+
+        try {
+            bot.loadTasks();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
         System.out.println(SEP + GREETING + SEP);
     
         Task task = bot.nextTask(scanner);
@@ -112,7 +189,11 @@ public class SigmaBot {
 
                 task = bot.nextTask(scanner);
             } 
+
+            bot.saveTasks();
         } catch (SigmaBotException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 

@@ -19,3 +19,6 @@ text-ui-test/EXPECTED-UNIX.TXTk
 # etc
 .vscode
 .class
+
+# save files
+/saves/*
