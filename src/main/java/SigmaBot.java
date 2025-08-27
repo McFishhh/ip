@@ -2,9 +2,9 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class SigmaBot {
-    public static final String GREETING = "     Hello! I'm SigmaBot\r\n" + "     What can I do for you?\r\n";
-    public static final String GOODBYE = "     Bye. Hope to see you again soon!\r\n";
-    public static final String SEP = "    ____________________________________________________________\r\n";
+    public static final String GREETING = "Hello! I'm SigmaBot\r\n" + "What can I do for you?\r\n";
+    public static final String GOODBYE = "Bye. Hope to see you again soon!\r\n";
+    public static final String SEP = "____________________________________________________________\r\n";
 
     private ArrayList<Task> todo = new ArrayList<Task>(); 
     private int numTask = 0;
@@ -49,7 +49,7 @@ public class SigmaBot {
         if (msg2[0].equals("todo")) {
             // added testcase for todo with empty description 
             if (msg2.length == 1) {
-                System.out.println(SEP + "     Hey! invalid description\n" + SEP);
+                System.out.println(SEP + "Hey! invalid description\n" + SEP);
                 task = nextTask(scanner);
             } else { 
                 task = new TodoTask(msg2[1]);
@@ -63,7 +63,7 @@ public class SigmaBot {
             task = new EventTask(msg3[0], msg4[0], msg4[1]);
         } else if (!msg.equals("list") && !msg2[0].equals("mark") && !msg2[0].equals("unmark") && !msg2[0].equals("delete") && !msg.equals("bye")) {
             // throw new SigmaBotException("Hey, that is not a valid command!"); 
-            System.out.println(SEP + "     Hey! that doesnt make any sense!\n" + SEP);
+            System.out.println(SEP + "Hey! that doesnt make any sense!\n" + SEP);
             task = nextTask(scanner);
         }
 
@@ -72,9 +72,9 @@ public class SigmaBot {
 
     public void printTasks() {
         System.out.print(SEP);
-        System.out.println("     Here are the tasks in your list:");
+        System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < getNumTask(); i += 1) {
-            System.out.println("     " + String.valueOf(i + 1) + "." + this.todo.get(i));
+            System.out.println(String.valueOf(i + 1) + "." + this.todo.get(i));
         }       
         System.out.println(SEP);
     }
@@ -99,13 +99,13 @@ public class SigmaBot {
                     bot.printTasks();
                 } else if (task.getDescription().split(" ")[0].equals("delete")) {
                     Task deleted = bot.deleteItem(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
-                    System.out.println(SEP + "     Noted. I've removed this task:\n        " + //
-                            deleted + "\n     Now you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
+                    System.out.println(SEP + "Noted. I've removed this task:\n" + //
+                            deleted + "\nNow you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
                 } 
                 else {
                     bot.addItem(task);
-                    System.out.println(SEP + "     Got it. I've added this task:\n        " + //
-                            task + "\n     Now you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
+                    System.out.println(SEP + "Got it. I've added this task:\n" + //
+                            task + "\nNow you have " + bot.getNumTask() + " tasks in the list." + "\r\n" + SEP);
                 }
 
                 task = bot.nextTask(scanner);
