@@ -20,6 +20,11 @@ public class DeadlineTask extends TodoTask {
         this.deadline = deadline;
     }
 
+    public static DeadlineTask initFromString(String string) {
+        String[] stringSplit = string.split(" /by ", 2);
+        return new DeadlineTask(stringSplit[0], LocalDate.parse(stringSplit[1]));
+    }
+
     public String getTaskIcon() {
         return "D";
     }

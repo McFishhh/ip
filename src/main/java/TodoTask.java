@@ -8,6 +8,10 @@ public class TodoTask extends Task {
         super(description, isDone);
     }
 
+    public static TodoTask initFromString(String string) {
+        return new TodoTask(string);
+    }
+
     public String getTaskIcon() {
         return "T";
     }
