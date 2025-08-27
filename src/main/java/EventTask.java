@@ -1,5 +1,3 @@
-import java.time.LocalDate;
-
 public class EventTask extends TodoTask {
     protected String start;
     protected String end;
