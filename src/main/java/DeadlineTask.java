@@ -1,15 +1,18 @@
-public class DeadlineTask extends TodoTask {
-    protected String deadline;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-    public DeadlineTask(String description, String deadline) throws SigmaBotException{
+public class DeadlineTask extends TodoTask {
+    protected LocalDate deadline;
+
+    public DeadlineTask(String description, LocalDate deadline) throws SigmaBotException{
         super(description);
-        if (deadline.equals("")) {
+        if (deadline == null) {
             throw new SigmaBotException("Hey, theres no deadline!");
         }
         this.deadline = deadline;
     }
 
-    public DeadlineTask(String description, boolean isDone, String deadline) throws SigmaBotException{
+    public DeadlineTask(String description, boolean isDone, LocalDate deadline) throws SigmaBotException{
         super(description, isDone);
         if (deadline.equals("")) {
             throw new SigmaBotException("Hey, theres no deadline!");
@@ -27,12 +30,13 @@ public class DeadlineTask extends TodoTask {
 
     public static DeadlineTask decodeSaveFormat(String encoded) {
         String[] encodedSplit = encoded.split(",");
-        return new DeadlineTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]), encodedSplit[3]);
+        return new DeadlineTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]), LocalDate.parse(encodedSplit[3]));
     }
 
     @Override
     public String toString() {
+
         return "[D]" + "[" + this.getStatusIcon() + "] " + this.description + //
-                " (by: " + this.deadline + ")";
+                " (by: " + this.deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 }
