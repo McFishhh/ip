@@ -9,10 +9,21 @@ public class SigmaBot {
 
     private TaskList taskList; 
     private Parser parser;
+    private Storage storage;
+    private Ui ui;
 
     public SigmaBot() { 
-        parser = new Parser();
-        taskList = new TaskList();
+        this.parser = new Parser();
+        this.taskList = new TaskList();
+        this.storage = new Storage();
+        this.ui = new Ui();
+
+        // load tasks 
+        try {
+            this.loadTasks(this.storage);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public ArrayList<Task> addItem(Task task) {
@@ -66,19 +77,10 @@ public class SigmaBot {
         return storage.saveTasks(this.taskList);
     }
     
-    public static void main(String[] args) {
-        Ui ui = new Ui();
-        Storage storage = new Storage();
-        SigmaBot bot = new SigmaBot();
-
-        try {
-            bot.loadTasks(storage);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+    public void run() {
+        SigmaBot bot = this;
 
         System.out.println(SEP + GREETING + SEP);
-        
         
         bot.nextTask(ui);
         try {
@@ -94,5 +96,9 @@ public class SigmaBot {
         }
 
         System.out.println(SEP + GOODBYE + SEP);
+    }
+
+    public static void main(String[] args) {
+        new SigmaBot().run();
     }
 }
