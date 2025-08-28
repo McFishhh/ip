@@ -1,3 +1,4 @@
+package sigmaBot;
 public class Parser {
     private String input;
     private String inputFirstWord;
