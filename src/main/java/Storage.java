@@ -11,25 +11,14 @@ import java.io.IOException;
 import java.io.BufferedReader;
 
 public class Storage {
-    private Ui ui;
     private ArrayList<Task> todo;
-    // private int numTask;
 
     private String savePath = "saves/savedTasks.txt";
     public static final String SEP = "____________________________________________________________\r\n";
 
     public Storage() {
-        ui = new Ui();
         todo = new ArrayList<Task>();
     }
-
-    // public ArrayList<Task> addItem(Task item) {
-    //     todo.add(numTask, item);
-    //     // newTodo.add(item);
-    //     numTask += 1;
-
-    //     return todo;
-    // }
 
     public ArrayList<Task> loadTasks() throws IOException {
         Path path = Paths.get(savePath);
