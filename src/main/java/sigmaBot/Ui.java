@@ -12,11 +12,19 @@ public class Ui {
     public static final String SEP = "____________________________________________________________\r\n";
 
 
+    /**
+     * Constructs a Ui object and initializes the scanner and parser.
+     */
     public Ui() {
         scanner = new Scanner(System.in);
         parser = new Parser();
     }
 
+    /**
+     * Reads the next line of user input, validates it, and returns it.
+     *
+     * @return the next valid user input string
+     */
     public String nextInput() {
         this.input = scanner.nextLine().trim().toLowerCase();
         parser.setInput(this.input);
@@ -30,6 +38,11 @@ public class Ui {
         return input;
     }
 
+    /**
+     * Returns the most recent user input string.
+     *
+     * @return the most recent user input string
+     */
     public String getInput() {
         return input;
     }
