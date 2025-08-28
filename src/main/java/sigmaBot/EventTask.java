@@ -1,5 +1,5 @@
 package sigmaBot;
-public class EventTask extends TodoTask {
+public class EventTask extends Task {
     protected String start;
     protected String end;
         

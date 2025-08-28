@@ -2,7 +2,7 @@ package sigmaBot;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class DeadlineTask extends TodoTask {
+public class DeadlineTask extends Task {
     protected LocalDate deadline;
 
     public DeadlineTask(String description, LocalDate deadline) throws SigmaBotException{
@@ -41,7 +41,6 @@ public class DeadlineTask extends TodoTask {
 
     @Override
     public String toString() {
-
         return "[D]" + "[" + this.getStatusIcon() + "] " + this.description + //
                 " (by: " + this.deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
