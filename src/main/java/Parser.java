@@ -1,0 +1,101 @@
+public class Parser {
+    private String input;
+    private String inputFirstWord;
+
+    public static final String SEP = "____________________________________________________________\r\n";
+    
+    public void setInput(String input) {
+        this.input = input;
+        this.inputFirstWord = input.split(" ", 2)[0];
+    }
+
+    public String getInput() {
+        return this.input;
+    }
+
+    public Task parseInput(Ui ui, SigmaBot bot) {
+        String msg = ui.nextInput();
+        String[] msgSplit = msg.split(" ", 2);
+        
+        input = msg;
+        inputFirstWord = msgSplit[0];
+    
+        Task task = new TodoTask(msg);
+        if (isValidTask()) {
+            if (isTodoTask()) {
+                // added testcase for todo with empty description 
+                // if (msgSplit.length == 1) {
+                //     System.out.println(SEP + "Hey! invalid description\n" + SEP);
+                //     task = nextTask(;
+                // } else { 
+                //     task = TodoTask.initFromString(msgSplit[1]);
+                // }
+                task = TodoTask.initFromString(msgSplit[1]);
+            } else if (isDeadlineTask()) {
+                task = DeadlineTask.initFromString(msgSplit[1]);
+            } else if (isEventTask()) {
+                task = EventTask.initFromString(msgSplit[1]);
+            }
+
+            bot.addItem(task);
+            System.out.println(SEP + "Got it. I've added this task:\n" + 
+                    task + "\nNow you have " + bot.getNumTask() + 
+                    " tasks in the list." + "\r\n" + SEP);
+        } else if (isList()) {
+            bot.printTasks();
+        } else if (isMark()) {
+            bot.markTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
+            bot.printTasks();
+        } else if (isUnmark()) {
+            bot.unmarkTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
+            bot.printTasks();
+        } else if (isDelete()) {
+            Task deleted = bot.deleteItem(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
+            System.out.println(SEP + "Noted. I've removed this task:\n" + 
+                    deleted + "\nNow you have " + bot.getNumTask() + 
+                    " tasks in the list." + "\r\n" + SEP);
+        }
+
+        return task;
+    } 
+
+    public boolean isTodoTask() {
+        return inputFirstWord.equals("todo");
+    }
+
+    public boolean isDeadlineTask() {
+        return inputFirstWord.equals("deadline");
+    }
+
+    public boolean isEventTask() {
+        return inputFirstWord.equals("event");
+    }
+
+    public boolean isList() {
+        return input.equals("list");
+    }    
+    
+    public boolean isBye() {
+        return input.equals("bye");
+    }
+
+    public boolean isMark() {
+        return inputFirstWord.equals("mark");
+    }
+
+    public boolean isUnmark() {
+        return inputFirstWord.equals("unmark");
+    }
+
+    public boolean isDelete() {
+        return inputFirstWord.equals("delete");
+    }
+
+    public boolean isValidTask() {
+        return isTodoTask() || isDeadlineTask() || isEventTask();
+    }
+
+    public boolean isValidAction() {
+        return isList() || isBye() || isMark() || isUnmark() || isDelete();
+    }
+}

@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Ui {
     private Scanner scanner;
     private String input;
-    private String inputFirstWord;
+    private Parser parser;
 
     public static final String GREETING = "Hello! I'm SigmaBot\r\n" + 
                                             "What can I do for you?\r\n";
@@ -13,16 +13,17 @@ public class Ui {
 
     public Ui() {
         scanner = new Scanner(System.in);
+        parser = new Parser();
     }
 
     public String nextInput() {
-        input = scanner.nextLine().trim().toLowerCase();
-        inputFirstWord = input.split(" ")[0];
+        this.input = scanner.nextLine().trim().toLowerCase();
+        parser.setInput(this.input);
         
-        while (!isValidTask() && !isValidAction()) {
+        while (!parser.isValidTask() && !parser.isValidAction()) {
             System.out.println(SEP + "Hey! that doesnt make any sense!\n" + SEP);
-            input = scanner.nextLine().trim().toLowerCase();
-            inputFirstWord = input.split(" ")[0];
+            this.input = scanner.nextLine().trim().toLowerCase();
+            parser.setInput(this.input);
         }
             
         return input;
@@ -31,45 +32,4 @@ public class Ui {
     public String getInput() {
         return input;
     }
-
-    public boolean isTodoTask() {
-        return inputFirstWord.equals("todo");
-    }
-
-    public boolean isDeadlineTask() {
-        return inputFirstWord.equals("deadline");
-    }
-
-    public boolean isEventTask() {
-        return inputFirstWord.equals("event");
-    }
-
-    public boolean isList() {
-        return input.equals("list");
-    }    
-    
-    public boolean isBye() {
-        return input.equals("bye");
-    }
-
-    public boolean isMark() {
-        return inputFirstWord.equals("mark");
-    }
-
-    public boolean isUnmark() {
-        return inputFirstWord.equals("unmark");
-    }
-
-    public boolean isDelete() {
-        return inputFirstWord.equals("delete");
-    }
-
-    public boolean isValidTask() {
-        return isTodoTask() || isDeadlineTask() || isEventTask();
-    }
-
-    public boolean isValidAction() {
-        return isList() || isBye() || isMark() || isUnmark() || isDelete();
-    }
-
 }

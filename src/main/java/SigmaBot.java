@@ -8,8 +8,10 @@ public class SigmaBot {
     public static final String SEP = "____________________________________________________________\r\n";
 
     private ArrayList<Task> todo = new ArrayList<Task>(); 
+    private Parser parser;
 
     public SigmaBot() { 
+        parser = new Parser();
     }
 
     public ArrayList<Task> addItem(Task item) {
@@ -43,23 +45,7 @@ public class SigmaBot {
     }
 
     public Task nextTask(Ui ui) throws SigmaBotException{
-        String msg = ui.nextInput();
-        String[] msgSplit = msg.split(" ", 2);
-        
-        Task task = new TodoTask(msg);
-        if (ui.isTodoTask()) {
-            // added testcase for todo with empty description 
-            if (msgSplit.length == 1) {
-                System.out.println(SEP + "Hey! invalid description\n" + SEP);
-                task = nextTask(ui);
-            } else { 
-                task = TodoTask.initFromString(msgSplit[1]);
-            }
-        } else if (ui.isDeadlineTask()) {
-            task = DeadlineTask.initFromString(msgSplit[1]);
-        } else if (ui.isEventTask()) {
-            task = EventTask.initFromString(msgSplit[1]);
-        } 
+        Task task = this.parser.parseInput(ui, this);
 
         return task;
     }
@@ -95,30 +81,10 @@ public class SigmaBot {
         System.out.println(SEP + GREETING + SEP);
         
         
-        Task task = bot.nextTask(ui);
+        bot.nextTask(ui);
         try {
-            while (!ui.isBye()) {
-                if (ui.isList()) {
-                    bot.printTasks();
-                } else if (ui.isMark()) {
-                    bot.markTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
-                    bot.printTasks();
-                } else if (ui.isUnmark()) {
-                    bot.unmarkTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
-                    bot.printTasks();
-                } else if (ui.isDelete()) {
-                    Task deleted = bot.deleteItem(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
-                    System.out.println(SEP + "Noted. I've removed this task:\n" + 
-                            deleted + "\nNow you have " + bot.getNumTask() + 
-                            " tasks in the list." + "\r\n" + SEP);
-                } else {
-                    bot.addItem(task);
-                    System.out.println(SEP + "Got it. I've added this task:\n" + 
-                            task + "\nNow you have " + bot.getNumTask() + 
-                            " tasks in the list." + "\r\n" + SEP);
-                }
-
-                task = bot.nextTask(ui);
+            while (!bot.parser.isBye()) {
+                bot.nextTask(ui);
             } 
 
             bot.saveTasks(storage);
