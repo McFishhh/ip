@@ -21,6 +21,19 @@ public class Storage {
         todo = new ArrayList<Task>();
     }
 
+    public ArrayList<Task> findTasks(TaskList tasList, String keyword) {
+        ArrayList<Task> matchedList = new ArrayList<Task>();
+        String lowerKeyword = keyword.toLowerCase();
+
+        for (Task task : tasList.getTaskList()) {
+            if (task.getDescription().toLowerCase().contains(lowerKeyword)) {
+                matchedList.add(task);
+            }
+        }
+
+        return matchedList;
+    }
+
     public ArrayList<Task> loadTasks() throws IOException {
         Path path = Paths.get(savePath);
         

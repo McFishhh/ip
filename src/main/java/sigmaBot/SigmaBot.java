@@ -70,12 +70,25 @@ public class SigmaBot {
         System.out.println(SEP);
     }
 
+    public void printMatchingTasks(ArrayList<Task> matchingList) {
+        System.out.print(SEP);
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < matchingList.size() ; i += 1) {
+            System.out.println(String.valueOf(i + 1) + "." + matchingList.get(i));
+        }       
+        System.out.println(SEP);
+    }
+
     private void loadTasks(Storage storage) throws IOException {
         taskList.setTaskList(storage.loadTasks());
     }
 
     private boolean saveTasks(Storage storage) throws IOException {
         return storage.saveTasks(this.taskList);
+    }
+
+    public ArrayList<Task> findTasks(String keyword) {
+        return storage.findTasks(this.taskList, keyword);
     }
     
     public void run() {
