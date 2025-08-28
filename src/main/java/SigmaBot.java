@@ -7,41 +7,40 @@ public class SigmaBot {
     public static final String GOODBYE = "Bye. Hope to see you again soon!\r\n";
     public static final String SEP = "____________________________________________________________\r\n";
 
-    private ArrayList<Task> todo = new ArrayList<Task>(); 
+    private TaskList taskList; 
     private Parser parser;
 
     public SigmaBot() { 
         parser = new Parser();
+        taskList = new TaskList();
     }
 
-    public ArrayList<Task> addItem(Task item) {
-        todo.add(item);
-
-        return todo;
+    public ArrayList<Task> addItem(Task task) {
+        return this.taskList.addTask(task);
     }
     
     public Task deleteItem(int i) {
-        return todo.remove(i);
+        return this.taskList.deleteTask(i);
     }
 
-    public ArrayList<Task> getTodo() {
-        return this.todo;
+    public TaskList getTodo() {
+        return this.taskList;
     } 
 
-    public void setTodo(ArrayList<Task> todoToSet) {
-        this.todo = todoToSet;
+    public void setTodo(TaskList todoToSet) {
+        this.taskList = todoToSet;
     } 
 
     public int getNumTask() {
-        return todo.size();
+        return taskList.size();
     } 
 
     public void markTask(int i) {
-        this.todo.get(i).mark();
+        this.taskList.get(i).mark();
     }
 
     public void unmarkTask(int i) {
-        this.todo.get(i).unmark();
+        this.taskList.get(i).unmark();
     }
 
     public Task nextTask(Ui ui) throws SigmaBotException{
@@ -53,18 +52,18 @@ public class SigmaBot {
     public void printTasks() {
         System.out.print(SEP);
         System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < this.todo.size() ; i += 1) {
-            System.out.println(String.valueOf(i + 1) + "." + this.todo.get(i));
+        for (int i = 0; i < this.taskList.size() ; i += 1) {
+            System.out.println(String.valueOf(i + 1) + "." + this.taskList.get(i));
         }       
         System.out.println(SEP);
     }
 
     private void loadTasks(Storage storage) throws IOException {
-        setTodo(storage.loadTasks());
+        taskList.setTaskList(storage.loadTasks());
     }
 
     private boolean saveTasks(Storage storage) throws IOException {
-        return storage.saveTasks(this.todo);
+        return storage.saveTasks(this.taskList);
     }
     
     public static void main(String[] args) {

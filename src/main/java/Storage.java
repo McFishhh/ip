@@ -49,7 +49,7 @@ public class Storage {
         return todo;
     }
 
-    public boolean saveTasks(ArrayList<Task> todoToSave) throws IOException {
+    public boolean saveTasks(TaskList todoToSave) throws IOException {
         File file = new File(savePath);
 
         // create new dir and file if it doesnt exist 
@@ -62,7 +62,7 @@ public class Storage {
         // FileWriter fileWriter = new FileWriter(savePath, true);
         FileWriter fileWriter = new FileWriter(savePath);
 
-        for (Task task : todoToSave) {
+        for (Task task : todoToSave.getTaskList()) {
             fileWriter.write(task.encodeSaveFormat() + "\n");
         }
 
