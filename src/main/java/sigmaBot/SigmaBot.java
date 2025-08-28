@@ -18,10 +18,9 @@ public class SigmaBot {
         this.taskList = new TaskList();
         this.storage = new Storage();
         this.ui = new Ui();
-
-        // load tasks 
+ 
         try {
-            this.loadTasks(this.storage);
+            this.loadTasks(this.storage); // load tasks
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
