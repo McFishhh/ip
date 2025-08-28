@@ -1,4 +1,7 @@
 package sigmaBot;
+
+import java.util.ArrayList;
+
 public class Parser {
     private String input;
     private String inputFirstWord;
@@ -72,6 +75,9 @@ public class Parser {
             System.out.println(SEP + "Noted. I've removed this task:\n" + 
                     deleted + "\nNow you have " + bot.getNumTask() + 
                     " tasks in the list." + "\r\n" + SEP);
+        } else if (isFind()) {
+            ArrayList<Task> matchingList = bot.findTasks(msgSplit[1]);
+            bot.printMatchingTasks(matchingList);
         }
 
         return task;
@@ -109,11 +115,15 @@ public class Parser {
         return inputFirstWord.equals("delete");
     }
 
+    public boolean isFind() {
+        return inputFirstWord.equals("find");
+    }
+
     public boolean isValidTask() {
         return isTodoTask() || isDeadlineTask() || isEventTask();
     }
 
     public boolean isValidAction() {
-        return isList() || isBye() || isMark() || isUnmark() || isDelete();
+        return isList() || isBye() || isMark() || isUnmark() || isDelete() || isFind();
     }
 }
