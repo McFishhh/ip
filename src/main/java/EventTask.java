@@ -20,6 +20,12 @@ public class EventTask extends TodoTask {
         this.end = end;
     }
 
+    public static EventTask initFromString(String string) {
+        String[] stringSplit = string.split(" /from ", 2);
+        String[] stringSplit2 = stringSplit[1].split(" /to ", 2);
+        return new EventTask(stringSplit[0], stringSplit2[0], stringSplit2[1]);
+    }
+
     public String getTaskIcon() {
         return "E";
     }
