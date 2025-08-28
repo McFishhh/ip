@@ -17,10 +17,19 @@ public class Storage {
     private String savePath = "saves/savedTasks.txt";
     public static final String SEP = "____________________________________________________________\r\n";
 
+    /**
+     * Constructs a Storage object and initializes the todo list.
+     */
     public Storage() {
         todo = new ArrayList<Task>();
     }
 
+    /**
+     * Loads tasks from the save file into the todo list.
+     *
+     * @return the list of loaded tasks
+     * @throws IOException if an I/O error occurs while reading the file
+     */
     public ArrayList<Task> loadTasks() throws IOException {
         Path path = Paths.get(savePath);
         
@@ -50,6 +59,13 @@ public class Storage {
         return todo;
     }
 
+    /**
+     * Saves the given TaskList to the save file.
+     *
+     * @param todoToSave the TaskList to save
+     * @return true if the tasks were saved successfully, false otherwise
+     * @throws IOException if an I/O error occurs while writing the file
+     */
     public boolean saveTasks(TaskList todoToSave) throws IOException {
         File file = new File(savePath);
 

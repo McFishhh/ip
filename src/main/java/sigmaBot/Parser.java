@@ -5,15 +5,32 @@ public class Parser {
 
     public static final String SEP = "____________________________________________________________\r\n";
     
+    /**
+     * Sets the input string and updates the first word of the input.
+     *
+     * @param input the user input string
+     */
     public void setInput(String input) {
         this.input = input;
         this.inputFirstWord = input.split(" ", 2)[0];
     }
 
+    /**
+     * Returns the current input string.
+     *
+     * @return the current user input string
+     */
     public String getInput() {
         return this.input;
     }
 
+    /**
+     * Parses the user input and performs the corresponding action on the bot.
+     *
+     * @param ui the Ui object for user interaction
+     * @param bot the SigmaBot instance to operate on
+     * @return the Task created or affected by the input
+     */
     public Task parseInput(Ui ui, SigmaBot bot) {
         String msg = ui.nextInput();
         String[] msgSplit = msg.split(" ", 2);
