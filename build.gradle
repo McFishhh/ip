@@ -33,6 +33,7 @@ application {
 
 shadowJar {
     archiveBaseName = "SigmaBot"
+    archiveFileName = "SigmaBot.jar"
     archiveClassifier = null
 }
 
