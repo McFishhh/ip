@@ -1,3 +1,4 @@
+package sigmaBot;
 public class EventTask extends TodoTask {
     protected String start;
     protected String end;
