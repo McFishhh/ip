@@ -2,6 +2,7 @@ package sigmaBot;
 public abstract class Task {
     protected String description;
     protected boolean isDone;
+    protected String printMsg;
 
     /**
      * Constructs a new Task with the given description and sets it as not done by default.
@@ -48,6 +49,14 @@ public abstract class Task {
      */
     public String getDescription() {
         return this.description;
+    }
+
+    public String getPrintMsg() {
+        return this.printMsg;
+    }
+
+    public void setPrintMsg(String printMsg) {
+        this.printMsg = printMsg;
     }
 
     /**
