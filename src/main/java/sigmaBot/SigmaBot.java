@@ -1,5 +1,7 @@
 package sigmaBot;
 import java.util.ArrayList;
+
+
 import java.io.IOException;
 
 public class SigmaBot {
@@ -54,8 +56,14 @@ public class SigmaBot {
         this.taskList.get(i).unmark();
     }
 
-    public Task nextTask(Ui ui) throws SigmaBotException{
+    public Task nextTask() throws SigmaBotException{
         Task task = this.parser.parseInput(ui, this);
+
+        return task;
+    }
+
+    public Task nextTaskfromString(String msg) throws SigmaBotException{
+        Task task = this.parser.parseInputFromString(msg, this);
 
         return task;
     }
@@ -69,6 +77,18 @@ public class SigmaBot {
         System.out.println(SEP);
     }
 
+    public String getPrintTasks() {
+        String result = "";
+        result += SEP + "\n";
+        result += "Here are the tasks in your list:\n";
+        for (int i = 0; i < this.taskList.size() ; i += 1) {
+            result += String.valueOf(i + 1) + "." + this.taskList.get(i) + "\n";
+        }       
+        result += SEP;
+
+        return result;
+    }
+
     public void printMatchingTasks(ArrayList<Task> matchingList) {
         System.out.print(SEP);
         System.out.println("Here are the matching tasks in your list:");
@@ -76,6 +96,18 @@ public class SigmaBot {
             System.out.println(String.valueOf(i + 1) + "." + matchingList.get(i));
         }       
         System.out.println(SEP);
+    }
+
+    public String getPrintMatchingTasks(ArrayList<Task> matchingList) {
+        String result = "";
+        result += SEP + "\n";
+        result += "Here are the matching tasks in your list:" + "\n";
+        for (int i = 0; i < matchingList.size() ; i += 1) {
+            result += String.valueOf(i + 1) + "." + matchingList.get(i) + "\n";
+        }       
+        result += SEP;
+
+        return result;
     }
 
     private void loadTasks(Storage storage) throws IOException {
@@ -89,16 +121,35 @@ public class SigmaBot {
     public ArrayList<Task> findTasks(String keyword) {
         return storage.findTasks(this.taskList, keyword);
     }
+
+    public boolean isBye(String input) {
+        if (input.equals("bye")) {
+            try {
+                this.bye();
+                
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void bye() throws IOException {
+        this.saveTasks(storage);
+    }
     
     public void run() {
         SigmaBot bot = this;
 
         System.out.println(SEP + GREETING + SEP);
         
-        bot.nextTask(ui);
+        bot.nextTask();
         try {
             while (!bot.parser.isBye()) {
-                bot.nextTask(ui);
+                bot.nextTask();
             } 
 
             bot.saveTasks(storage);
@@ -109,6 +160,13 @@ public class SigmaBot {
         }
 
         System.out.println(SEP + GOODBYE + SEP);
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "SigmaBot heard: " + input;
     }
 
     public static void main(String[] args) {

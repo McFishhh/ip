@@ -59,25 +59,81 @@ public class Parser {
             }
 
             bot.addItem(task);
-            System.out.println(SEP + "Got it. I've added this task:\n" + 
+            task.setPrintMsg(SEP + "Got it. I've added this task:\n" + 
                     task + "\nNow you have " + bot.getNumTask() + 
                     " tasks in the list." + "\r\n" + SEP);
         } else if (isList()) {
-            bot.printTasks();
+            task.setPrintMsg(bot.getPrintTasks());
         } else if (isMark()) {
             bot.markTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
-            bot.printTasks();
+            task.setPrintMsg(bot.getPrintTasks());
         } else if (isUnmark()) {
             bot.unmarkTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
-            bot.printTasks();
+            task.setPrintMsg(bot.getPrintTasks());
         } else if (isDelete()) {
             Task deleted = bot.deleteItem(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
-            System.out.println(SEP + "Noted. I've removed this task:\n" + 
+            task.setPrintMsg(SEP + "Noted. I've removed this task:\n" + 
                     deleted + "\nNow you have " + bot.getNumTask() + 
                     " tasks in the list." + "\r\n" + SEP);
         } else if (isFind()) {
             ArrayList<Task> matchingList = bot.findTasks(msgSplit[1]);
-            bot.printMatchingTasks(matchingList);
+            task.setPrintMsg(bot.getPrintMatchingTasks(matchingList));
+        }
+
+        return task;
+    } 
+
+    /**
+     * Parses the user input and performs the corresponding action on the bot.
+     *
+     * @param msg the string input msg by the user 
+     * @param bot the SigmaBot instance to operate on
+     * @return the Task created or affected by the input
+     */
+    public Task parseInputFromString(String msg, SigmaBot bot) {
+        // String msg = ui.nextInput();
+        String[] msgSplit = msg.split(" ", 2);
+        
+        input = msg;
+        inputFirstWord = msgSplit[0];
+    
+        Task task = new TodoTask(msg);
+        if (isValidTask()) {
+            if (isTodoTask()) {
+                // added testcase for todo with empty description 
+                // if (msgSplit.length == 1) {
+                //     System.out.println(SEP + "Hey! invalid description\n" + SEP);
+                //     task = nextTask(;
+                // } else { 
+                //     task = TodoTask.initFromString(msgSplit[1]);
+                // }
+                task = TodoTask.initFromString(msgSplit[1]);
+            } else if (isDeadlineTask()) {
+                task = DeadlineTask.initFromString(msgSplit[1]);
+            } else if (isEventTask()) {
+                task = EventTask.initFromString(msgSplit[1]);
+            }
+
+            bot.addItem(task);
+            task.setPrintMsg(SEP + "Got it. I've added this task:\n" + 
+                    task + "\nNow you have " + bot.getNumTask() + 
+                    " tasks in the list." + "\r\n" + SEP);
+        } else if (isList()) {
+            task.setPrintMsg(bot.getPrintTasks());
+        } else if (isMark()) {
+            bot.markTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
+            task.setPrintMsg(bot.getPrintTasks());
+        } else if (isUnmark()) {
+            bot.unmarkTask(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
+            task.setPrintMsg(bot.getPrintTasks());
+        } else if (isDelete()) {
+            Task deleted = bot.deleteItem(Integer.parseInt(task.getDescription().split(" ")[1]) - 1);
+            task.setPrintMsg(SEP + "Noted. I've removed this task:\n" + 
+                    deleted + "\nNow you have " + bot.getNumTask() + 
+                    " tasks in the list." + "\r\n" + SEP);
+        } else if (isFind()) {
+            ArrayList<Task> matchingList = bot.findTasks(msgSplit[1]);
+            task.setPrintMsg(bot.getPrintMatchingTasks(matchingList));
         }
 
         return task;
