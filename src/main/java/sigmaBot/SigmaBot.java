@@ -1,7 +1,6 @@
 package sigmaBot;
 import java.util.ArrayList;
 
-
 import java.io.IOException;
 
 public class SigmaBot {
@@ -29,10 +28,12 @@ public class SigmaBot {
     }
 
     public ArrayList<Task> addItem(Task task) {
+        assert task != null : "Task to add cannot be null for SigmaBot::addItem";
         return this.taskList.addTask(task);
     }
     
     public Task deleteItem(int i) {
+        assert i >= 0 && i < this.taskList.size() : "Index out of bounds for SigmaBot::deleteItem";
         return this.taskList.deleteTask(i);
     }
 
@@ -41,6 +42,7 @@ public class SigmaBot {
     } 
 
     public void setTodo(TaskList todoToSet) {
+        assert todoToSet != null : "TaskList to set cannot be null for SigmaBot::setTodo";
         this.taskList = todoToSet;
     } 
 
@@ -49,10 +51,12 @@ public class SigmaBot {
     } 
 
     public void markTask(int i) {
+        assert i >= 0 && i < this.taskList.size() : "Index out of bounds for SigmaBot::markTask";
         this.taskList.get(i).mark();
     }
 
     public void unmarkTask(int i) {
+        assert i >= 0 && i < this.taskList.size() : "Index out of bounds for SigmaBot::unmarkTask";
         this.taskList.get(i).unmark();
     }
 
@@ -90,6 +94,7 @@ public class SigmaBot {
     }
 
     public void printMatchingTasks(ArrayList<Task> matchingList) {
+        assert matchingList != null : "Matching list cannot be null for SigmaBot::printMatchingTasks";
         System.out.print(SEP);
         System.out.println("Here are the matching tasks in your list:");
         for (int i = 0; i < matchingList.size() ; i += 1) {
@@ -99,6 +104,7 @@ public class SigmaBot {
     }
 
     public String getPrintMatchingTasks(ArrayList<Task> matchingList) {
+        assert matchingList != null : "Matching list cannot be null for SigmaBot::getPrintMatchingTasks";
         String result = "";
         result += SEP + "\n";
         result += "Here are the matching tasks in your list:" + "\n";
