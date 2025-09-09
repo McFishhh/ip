@@ -27,14 +27,23 @@ public class SigmaBot {
         }
     }
 
-    public ArrayList<Task> addItem(Task task) {
+    public ArrayList<Task> addItem(Task task, int i) {
         assert task != null : "Task to add cannot be null for SigmaBot::addItem";
-        return this.taskList.addTask(task);
+        return this.taskList.addTask(task, i);
+    }
+
+    public ArrayList<Task> addItemLast(Task task) {
+        assert task != null : "Task to add cannot be null for SigmaBot::addItem";
+        return this.taskList.addTask(task, this.taskList.size() - 1);
     }
     
     public Task deleteItem(int i) {
         assert i >= 0 && i < this.taskList.size() : "Index out of bounds for SigmaBot::deleteItem";
         return this.taskList.deleteTask(i);
+    }
+
+    public Task deleteLastItem() {
+        return this.taskList.deleteTask(this.taskList.size() - 1);
     }
 
     public TaskList getTodo() {

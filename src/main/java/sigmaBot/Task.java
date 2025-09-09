@@ -89,6 +89,8 @@ public abstract class Task {
 
     // abstract public Task decodeSaveFormat(String encoded);
 
+    abstract public String getDeleteFormat();
+
     /**
      * Returns a string representation of this task, including its status and description.
      *

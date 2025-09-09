@@ -47,6 +47,12 @@ public class DeadlineTask extends Task {
         return new DeadlineTask(stringSplit[0], LocalDate.parse(stringSplit[1]));
     }
 
+    public static DeadlineTask initFromString(String string, Boolean isDone) {
+        String[] stringSplit = string.split(" /by ", 2);
+        return new DeadlineTask(stringSplit[0], isDone, LocalDate.parse(stringSplit[1]));
+    }
+
+
     /**
      * Returns the icon representing a deadline task.
      *
@@ -74,6 +80,10 @@ public class DeadlineTask extends Task {
     public static DeadlineTask decodeSaveFormat(String encoded) {
         String[] encodedSplit = encoded.split(",");
         return new DeadlineTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]), LocalDate.parse(encodedSplit[3]));
+    }
+
+    public String getDeleteFormat() {
+        return this.isDone +  " deadline " + this.description + " /by " + this.deadline.format(DateTimeFormatter.ofPattern("YYYY-MM-DD"));
     }
 
     /**
