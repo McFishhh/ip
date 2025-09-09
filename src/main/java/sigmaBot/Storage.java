@@ -24,16 +24,17 @@ public class Storage {
         todo = new ArrayList<Task>();
     }
 
-    public ArrayList<Task> findTasks(TaskList tasList, String keyword) {
+    public ArrayList<Task> findTasks(TaskList taskList, String keyword) {
+        assert taskList != null : "TaskList cannot be null";
+        assert keyword != null : "Keyword cannot be null";
         ArrayList<Task> matchedList = new ArrayList<Task>();
         String lowerKeyword = keyword.toLowerCase();
 
-        for (Task task : tasList.getTaskList()) {
+        for (Task task : taskList.getTaskList()) {
             if (task.getDescription().toLowerCase().contains(lowerKeyword)) {
                 matchedList.add(task);
             }
         }
-
         return matchedList;
     }
 
