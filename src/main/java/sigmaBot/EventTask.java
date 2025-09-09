@@ -50,6 +50,12 @@ public class EventTask extends Task {
         return new EventTask(stringSplit[0], stringSplit2[0], stringSplit2[1]);
     }
 
+    public static EventTask initFromString(String string, Boolean isDone) {
+        String[] stringSplit = string.split(" /from ", 2);
+        String[] stringSplit2 = stringSplit[1].split(" /to ", 2);
+        return new EventTask(stringSplit[0], isDone, stringSplit2[0], stringSplit2[1]);
+    }
+
     /**
      * Returns the icon representing an event task.
      *
@@ -77,6 +83,10 @@ public class EventTask extends Task {
     public static EventTask decodeSaveFormat(String encoded) {
         String[] encodedSplit = encoded.split(",");
         return new EventTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]), encodedSplit[3], encodedSplit[4]);
+    }
+
+    public String getDeleteFormat() {
+        return this.isDone + " event " + this.description + " /from " + this.start + " /to " + this.end;
     }
 
     /**

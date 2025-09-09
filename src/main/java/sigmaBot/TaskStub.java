@@ -49,6 +49,10 @@ public class TaskStub extends Task {
         return "S,false,batheHamster";
     }
 
+    @Override
+    public String getDeleteFormat() {
+        return "stub batheHamster";
+    }
 
     @Override
     public String toString() {

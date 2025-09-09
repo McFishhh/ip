@@ -30,6 +30,10 @@ public class TodoTask extends Task {
         return new TodoTask(string);
     }
 
+    public static TodoTask initFromString(String string, Boolean isDone) {
+        return new TodoTask(string, isDone);
+    }
+
     /**
      * Returns the icon representing a todo task.
      *
@@ -57,6 +61,10 @@ public class TodoTask extends Task {
     public static TodoTask decodeSaveFormat(String encoded) {
         String[] encodedSplit = encoded.split(",");
         return new TodoTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]));
+    }
+
+    public String getDeleteFormat() {
+        return this.isDone + " todo " + this.description;
     }
 
     /**

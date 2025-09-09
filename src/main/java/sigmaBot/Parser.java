@@ -3,8 +3,9 @@ package sigmaBot;
 import java.util.ArrayList;
 
 public class Parser {
-    private String input;
-    private String inputFirstWord;
+    private String input = "";
+    private String inputFirstWord = "";
+    private String prevInput;
 
     public static final String SEP = "____________________________________________________________\r\n";
     
@@ -14,6 +15,10 @@ public class Parser {
      * @param input the user input string
      */
     public void setInput(String input) {
+        if (isValidTask() || isMark() || isUnmark()) {
+            this.prevInput = this.input;
+        } 
+
         this.input = input;
         this.inputFirstWord = input.split(" ", 2)[0];
     }
@@ -63,8 +68,7 @@ public class Parser {
         }
 
         String[] msgSplit = msg.split(" ", 2);
-        input = msg;
-        inputFirstWord = msgSplit[0];
+        setInput(msg);
 
         Task task = new TodoTask(msg);
         if (isValidTask()) {
@@ -77,7 +81,7 @@ public class Parser {
             } else if (isEventTask()) {
                 task = EventTask.initFromString(msgSplit[1]);
             }
-            bot.addItem(task);
+            bot.addItemLast(task);
             task.setPrintMsg(SEP + "Got it. I've added this task:\n" +
                     task + "\nNow you have " + bot.getNumTask() +
                     " tasks in the list." + "\r\n" + SEP);
@@ -94,13 +98,86 @@ public class Parser {
         } else if (isDelete()) {
             String[] parts = task.getDescription().split(" ");
             Task deleted = bot.deleteItem(Integer.parseInt(parts[1]) - 1);
+            
+            int taskNo = Integer.valueOf(msg.split(" ")[1]);
+            this.prevInput = "delete " + (taskNo - 1) + " ";
+            // if (deleted.getTaskIcon().equals("T")) {
+            //     this.prevInput += "todo ";
+            // } else if (deleted.getTaskIcon().equals("D")) {
+            //     this.prevInput += "deadline ";
+            // } else if (deleted.getTaskIcon().equals("E")) {
+            //     this.prevInput += "event ";
+            // }
+            this.prevInput += deleted.getDeleteFormat();
+            
             task.setPrintMsg(SEP + "Noted. I've removed this task:\n" +
                     deleted + "\nNow you have " + bot.getNumTask() +
                     " tasks in the list." + "\r\n" + SEP);
+        } else if (isUndo()) {
+            task = undo(bot);
         } else if (isFind()) {
             ArrayList<Task> matchingList = bot.findTasks(msgSplit[1]);
             task.setPrintMsg(bot.getPrintMatchingTasks(matchingList));
         }
+        return task;
+    }
+
+
+    private Task undo(SigmaBot bot) {
+        if (prevInput == null) {
+            return new TodoTask(" ");
+        }
+
+        System.out.println("unmark: " + prevInput);
+        String[] prevInputSplit = prevInput.split(" ", 3);
+        String prevInputFirstWord = prevInputSplit[0];
+
+        Task task = new TodoTask(prevInput);
+        if (prevInputFirstWord.equals("todo") 
+        || prevInputFirstWord.equals("deadline") 
+        || prevInputFirstWord.equals("event")) {
+            Task deleted = bot.deleteLastItem();
+            task.setPrintMsg(SEP + "I've undone the previous task!\n" + 
+                    "Noted. I've removed this task:\n" +
+                    deleted + "\nNow you have " + bot.getNumTask() +
+                    " tasks in the list." + "\r\n" + SEP);
+        } else if (prevInputFirstWord.equals("mark")) {
+            String[] parts = task.getDescription().split(" ");
+            bot.unmarkTask(Integer.parseInt(parts[1]) - 1);
+            task.setPrintMsg(bot.getPrintTasks());
+        } else if (prevInputFirstWord.equals("unmark")) {
+            String[] parts = task.getDescription().split(" ");
+            bot.markTask(Integer.parseInt(parts[1]) - 1);
+            task.setPrintMsg(bot.getPrintTasks());
+        } else if (prevInputFirstWord.equals("delete")) {
+            String[] prevInputSplitAgain = prevInputSplit[2].split(" ", 3);
+
+            int deleteIndex = Integer.valueOf(prevInputSplit[1]);
+            Boolean isDone = Boolean.parseBoolean(prevInputSplitAgain[0]);
+            String taskType = prevInputSplitAgain[1];
+            String taskDescription = prevInputSplitAgain[2];
+
+            if (prevInputSplit.length < 2 || prevInputSplit[1].trim().isEmpty()) {
+                task.setPrintMsg(SEP + "Hey! invalid description\n" + SEP);
+            } else if (taskType.equals("todo")) {
+                task = TodoTask.initFromString(taskDescription, isDone);
+            } else if (taskType.equals("deadline")) {
+                task = DeadlineTask.initFromString(taskDescription, isDone);
+            } else if (taskType.equals("event")) {
+                task = EventTask.initFromString(taskDescription, isDone);
+            }
+            bot.addItem(task, deleteIndex);
+            task.setPrintMsg(SEP + "I've undone the previous task!\n" + 
+                    "I've and added this task:\n" +
+                    task + "\nNow you have " + bot.getNumTask() +
+                    " tasks in the list." + "\r\n" + SEP);
+        } 
+        // else if (isFind()) {
+        //     // do nothing
+        // } else if (prevInput.equals("list")) {
+        //     // do nothing 
+        // } 
+
         return task;
     }
 
@@ -118,6 +195,10 @@ public class Parser {
 
     public boolean isList() {
         return input.equals("list");
+    }   
+    
+    public boolean isUndo() {
+        return input.equals("undo");
     }    
     
     public boolean isBye() {
@@ -145,6 +226,6 @@ public class Parser {
     }
 
     public boolean isValidAction() {
-        return isList() || isBye() || isMark() || isUnmark() || isDelete() || isFind();
+        return isList() || isBye() || isMark() || isUnmark() || isDelete() || isFind() || isUndo();
     }
 }
