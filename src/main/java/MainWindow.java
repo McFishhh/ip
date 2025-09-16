@@ -46,7 +46,7 @@ public class MainWindow extends AnchorPane {
         if (sigmaBot.isBye(input)) {
             Platform.exit();
         } 
-        // String input = sigmaBot.nextTask().getPrintMsg();
+
         String response = sigmaBot.nextTaskfromString(input).getPrintMsg();
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),

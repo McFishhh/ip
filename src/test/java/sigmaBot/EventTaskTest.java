@@ -2,8 +2,6 @@ package sigmabot;
 
 import org.junit.jupiter.api.Test;
 
-import sigmabot.EventTask;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;;
 

@@ -90,7 +90,6 @@ public class Storage {
         }
 
         // saves file to savePath
-        // FileWriter fileWriter = new FileWriter(savePath, true);
         FileWriter fileWriter = new FileWriter(savePath);
 
         for (Task task : todoToSave.getTaskList()) {
