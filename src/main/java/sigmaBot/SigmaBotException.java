@@ -1,4 +1,4 @@
-package sigmaBot;
+package sigmabot;
 
 /**
  * Custom exception class for SigmaBot application errors.

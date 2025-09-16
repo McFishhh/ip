@@ -1,6 +1,11 @@
-package sigmaBot;
+package sigmabot;
 
 import org.junit.jupiter.api.Test;
+
+import sigmabot.Task;
+import sigmabot.TaskList;
+import sigmabot.TaskStub;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TaskListTest {

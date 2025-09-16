@@ -1,4 +1,4 @@
-package sigmaBot;
+package sigmabot;
 public class TodoTask extends Task {
     
     /**

@@ -5,10 +5,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-
+import sigmabot.SigmaBot;
 import javafx.application.Platform;
-
-import sigmaBot.SigmaBot;
 
 /**
  * Controller for the main GUI.

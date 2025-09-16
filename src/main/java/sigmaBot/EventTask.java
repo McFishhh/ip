@@ -1,4 +1,4 @@
-package sigmaBot;
+package sigmabot;
 public class EventTask extends Task {
     protected String start;
     protected String end;

@@ -1,4 +1,4 @@
-package sigmaBot;
+package sigmabot;
 
 /**
  * A stub implementation of Task used for testing purposes.

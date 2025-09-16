@@ -1,4 +1,4 @@
-package sigmaBot;
+package sigmabot;
 
 import java.util.ArrayList;
 

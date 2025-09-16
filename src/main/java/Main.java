@@ -5,11 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
-import sigmaBot.SigmaBot;
+import sigmabot.SigmaBot;
 
 /**
- * A GUI for Duke using FXML.
+ * A GUI for SigmaBot using FXML.
  */
 public class Main extends Application {
 
