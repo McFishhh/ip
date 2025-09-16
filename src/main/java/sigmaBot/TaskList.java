@@ -15,10 +15,22 @@ public class TaskList {
      * Adds a task to the task list.
      *
      * @param task the Task to add
+     * @param index te index to place the Task at
      * @return the updated list of tasks
      */
-    public ArrayList<Task> addTask(Task task, int i) {
-        this.taskList.add(i, task);
+    public ArrayList<Task> addTask(Task task, int index) {
+        this.taskList.add(index, task);
+        return this.taskList;
+    }
+
+    /**
+     * Adds a task to the task list.
+     *
+     * @param task the Task to add
+     * @return the updated list of tasks
+     */
+    public ArrayList<Task> addTask(Task task) {
+        this.taskList.add(task);
         return this.taskList;
     }
 
