@@ -47,6 +47,13 @@ public class DeadlineTask extends Task {
         return new DeadlineTask(stringSplit[0], LocalDate.parse(stringSplit[1]));
     }
 
+    /**
+     * Parses a string to create a new TodoTask object.
+     *
+     * @param string the string to parse
+     * @param isDone whether the task is marked as done
+     * @return a new TodoTask parsed from the string
+     */
     public static DeadlineTask initFromString(String string, Boolean isDone) {
         String[] stringSplit = string.split(" /by ", 2);
         return new DeadlineTask(stringSplit[0], isDone, LocalDate.parse(stringSplit[1]));
@@ -82,6 +89,12 @@ public class DeadlineTask extends Task {
         return new DeadlineTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]), LocalDate.parse(encodedSplit[3]));
     }
 
+    /**
+     * Encodes the string as a delete format, to be decoded upon an undo 
+     * call, to reverse the action 
+     * 
+     * @return encoded delete format of the task
+     */
     public String getDeleteFormat() {
         return this.isDone +  " deadline " + this.description + " /by " + this.deadline.format(DateTimeFormatter.ofPattern("YYYY-MM-DD"));
     }

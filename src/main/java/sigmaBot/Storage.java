@@ -40,8 +40,6 @@ public class Storage {
 
     /**
      * Loads tasks from the save file into the todo list.
-     *
-     * 
      * 
      * @return the list of loaded tasks
      * @throws IOException if an I/O error occurs while reading the file

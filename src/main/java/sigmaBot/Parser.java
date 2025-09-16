@@ -62,6 +62,15 @@ public class Parser {
         return handleInput(msg, bot);
     } 
 
+    /**
+     * Handles the parsed input and executes the corresponding command on the bot.
+     * This method processes various command types including task creation, marking, deletion, and searching.
+     *
+     * @param msg the input message to process
+     * @param bot the SigmaBot instance to operate on
+     * @return the Task created or affected by the input
+     * @throws IllegalArgumentException if msg or bot is null
+     */
     private Task handleInput(String msg, SigmaBot bot) {
         if (msg == null || bot == null) {
             throw new IllegalArgumentException("Input message and SigmaBot instance cannot be null");
@@ -101,13 +110,6 @@ public class Parser {
             
             int taskNo = Integer.valueOf(msg.split(" ")[1]);
             this.prevInput = "delete " + (taskNo - 1) + " ";
-            // if (deleted.getTaskIcon().equals("T")) {
-            //     this.prevInput += "todo ";
-            // } else if (deleted.getTaskIcon().equals("D")) {
-            //     this.prevInput += "deadline ";
-            // } else if (deleted.getTaskIcon().equals("E")) {
-            //     this.prevInput += "event ";
-            // }
             this.prevInput += deleted.getDeleteFormat();
             
             task.setPrintMsg(SEP + "Noted. I've removed this task:\n" +
@@ -123,6 +125,13 @@ public class Parser {
     }
 
 
+    /**
+     * Undoes the most recent user action by reversing its effects.
+     * Supports undoing task additions, markings, unmarkings, and deletions.
+     *
+     * @param bot the SigmaBot instance to operate on
+     * @return a Task representing the undo operation result
+     */
     private Task undo(SigmaBot bot) {
         if (prevInput == null) {
             return new TodoTask(" ");
@@ -172,59 +181,114 @@ public class Parser {
                     task + "\nNow you have " + bot.getNumTask() +
                     " tasks in the list." + "\r\n" + SEP);
         } 
-        // else if (isFind()) {
-        //     // do nothing
-        // } else if (prevInput.equals("list")) {
-        //     // do nothing 
-        // } 
 
         return task;
     }
 
+    /**
+     * Checks if the current input represents a todo task command.
+     *
+     * @return true if the input starts with "todo", false otherwise
+     */
     public boolean isTodoTask() {
         return inputFirstWord.equals("todo");
     }
 
+    /**
+     * Checks if the current input represents a deadline task command.
+     *
+     * @return true if the input starts with "deadline", false otherwise
+     */
     public boolean isDeadlineTask() {
         return inputFirstWord.equals("deadline");
     }
 
+    /**
+     * Checks if the current input represents an event task command.
+     *
+     * @return true if the input starts with "event", false otherwise
+     */
     public boolean isEventTask() {
         return inputFirstWord.equals("event");
     }
 
+    /**
+     * Checks if the current input is a list command.
+     *
+     * @return true if the input equals "list", false otherwise
+     */
     public boolean isList() {
         return input.equals("list");
     }   
     
+    /**
+     * Checks if the current input is an undo command.
+     *
+     * @return true if the input equals "undo", false otherwise
+     */
     public boolean isUndo() {
         return input.equals("undo");
     }    
     
+    /**
+     * Checks if the current input is a goodbye command.
+     *
+     * @return true if the input equals "bye", false otherwise
+     */
     public boolean isBye() {
         return input.equals("bye");
     }
 
+    /**
+     * Checks if the current input is a mark command.
+     *
+     * @return true if the input starts with "mark", false otherwise
+     */
     public boolean isMark() {
         return inputFirstWord.equals("mark");
     }
 
+    /**
+     * Checks if the current input is an unmark command.
+     *
+     * @return true if the input starts with "unmark", false otherwise
+     */
     public boolean isUnmark() {
         return inputFirstWord.equals("unmark");
     }
 
+    /**
+     * Checks if the current input is a delete command.
+     *
+     * @return true if the input starts with "delete", false otherwise
+     */
     public boolean isDelete() {
         return inputFirstWord.equals("delete");
     }
 
+    /**
+     * Checks if the current input is a find command.
+     *
+     * @return true if the input starts with "find", false otherwise
+     */
     public boolean isFind() {
         return inputFirstWord.equals("find");
     }
 
+    /**
+     * Checks if the current input represents a valid task creation command.
+     *
+     * @return true if the input is a todo, deadline, or event command, false otherwise
+     */
     public boolean isValidTask() {
         return isTodoTask() || isDeadlineTask() || isEventTask();
     }
 
+    /**
+     * Checks if the current input represents a valid action command.
+     *
+     * @return true if the input is a recognized action command, false otherwise
+     */
     public boolean isValidAction() {
         return isList() || isBye() || isMark() || isUnmark() || isDelete() || isFind() || isUndo();
     }

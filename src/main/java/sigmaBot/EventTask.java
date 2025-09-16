@@ -49,7 +49,14 @@ public class EventTask extends Task {
         String[] stringSplit2 = stringSplit[1].split(" /to ", 2);
         return new EventTask(stringSplit[0], stringSplit2[0], stringSplit2[1]);
     }
-
+    
+    /**
+     * Parses a string to create a new TodoTask object.
+     *
+     * @param string the string to parse
+     * @param isDone whether the task is marked as done
+     * @return a new TodoTask parsed from the string
+     */
     public static EventTask initFromString(String string, Boolean isDone) {
         String[] stringSplit = string.split(" /from ", 2);
         String[] stringSplit2 = stringSplit[1].split(" /to ", 2);
@@ -85,6 +92,12 @@ public class EventTask extends Task {
         return new EventTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]), encodedSplit[3], encodedSplit[4]);
     }
 
+    /**
+     * Encodes the string as a delete format, to be decoded upon an undo 
+     * call, to reverse the action 
+     * 
+     * @return encoded delete format of the task
+     */
     public String getDeleteFormat() {
         return this.isDone + " event " + this.description + " /from " + this.start + " /to " + this.end;
     }

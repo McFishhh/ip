@@ -51,15 +51,24 @@ public abstract class Task {
         return this.description;
     }
 
+    /**
+     * Returns the print message associated with this task.
+     *
+     * @return the print message for this task
+     */
     public String getPrintMsg() {
         return this.printMsg;
     }
 
+    /**
+     * Sets the print message for this task.
+     *
+     * @param printMsg the print message to set for this task
+     */
     public void setPrintMsg(String printMsg) {
         this.printMsg = printMsg;
     }
-
-    /**
+        /**
      * Marks this task as done by setting its status to true.
      */
     public void mark() {
@@ -87,8 +96,11 @@ public abstract class Task {
      */
     abstract public String encodeSaveFormat();
 
-    // abstract public Task decodeSaveFormat(String encoded);
-
+    /**
+     * Returns a formatted string suitable for deletion confirmation messages.
+     *
+     * @return formatted string containing task details for deletion display
+     */
     abstract public String getDeleteFormat();
 
     /**
