@@ -157,7 +157,6 @@ public class Parser {
             return new TodoTask(" ");
         }
 
-        System.out.println(prevInput);
         String[] prevInputSplit = prevInput.split(" ", 3);
         String prevInputFirstWord = prevInputSplit[0];
 

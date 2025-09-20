@@ -12,3 +12,4 @@
 ## general prompts
 - remove dead code or commented code out from any part of the code base
 - help to modularize methods in Parser.java to reduce method length 
+- help move related methods to be next to each other in the file for Parser.java.

@@ -15,7 +15,6 @@ public class Storage {
     private ArrayList<Task> todo;
 
     private String savePath = "saves/savedTasks.txt";
-    public static final String SEP = "____________________________________________________________\r\n";
 
     /**
      * Constructs a Storage object and initializes the todo list.
@@ -49,7 +48,7 @@ public class Storage {
         
         // check for existence of filepath 
         if (!Files.exists(path)) {
-            System.out.println(SEP + "No existing save file :(\n" + SEP);
+            System.out.println("No existing save file :(\n");
             return todo;
         }
 
@@ -68,7 +67,7 @@ public class Storage {
             }
         }
 
-        System.out.println(SEP + "Successfully loaded tasks! :D\n" + SEP);
+        System.out.println("Successfully loaded tasks! :D\n");
         bufferReader.close();
         return todo;
     }
@@ -96,7 +95,7 @@ public class Storage {
             fileWriter.write(task.encodeSaveFormat() + "\n");
         }
 
-        System.out.println(SEP + "Successfully saved tasks!\n" + SEP);
+        System.out.println("Successfully saved tasks!\n");
         fileWriter.close();
         return true;
     }

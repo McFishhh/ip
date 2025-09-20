@@ -74,7 +74,7 @@ public class DialogBox extends HBox {
      * @param img the bot's avatar image
      * @return a DialogBox configured for bot messages with flipped layout
      */
-    public static DialogBox getDukeDialog(String text, Image img) {
+    public static DialogBox getSigmaBotDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
         return db;

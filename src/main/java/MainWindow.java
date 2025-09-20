@@ -24,7 +24,7 @@ public class MainWindow extends AnchorPane {
     private SigmaBot sigmaBot;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/crying_wojack.png"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/gigachad.jpg"));
+    private Image sigmaBotImage = new Image(this.getClass().getResourceAsStream("/images/gigachad.jpg")); 
 
     @FXML
     public void initialize() {
@@ -50,7 +50,7 @@ public class MainWindow extends AnchorPane {
         String response = sigmaBot.nextTaskfromString(input).getPrintMsg();
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, dukeImage)
+                DialogBox.getSigmaBotDialog(response, sigmaBotImage)
         );
         userInput.clear();
     }
