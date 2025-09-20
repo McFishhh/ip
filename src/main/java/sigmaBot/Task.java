@@ -1,4 +1,8 @@
 package sigmabot;
+
+/**
+ * Represents an abstract Task with a description, completion status, and print message.
+ */
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -7,8 +11,8 @@ public abstract class Task {
     /**
      * Constructs a new Task with the given description and sets it as not done by default.
      *
-     * @param description the description of the task
-     * @throws SigmaBotException if description is empty
+     * @param description The description of the task.
+     * @throws SigmaBotException If description is empty.
      */
     public Task(String description) throws SigmaBotException {
         if (description.equals("")) {
@@ -21,9 +25,9 @@ public abstract class Task {
     /**
      * Constructs a new Task with the given description and completion status.
      *
-     * @param description the description of the task
-     * @param isDone whether the task is marked as done
-     * @throws SigmaBotException if description is empty
+     * @param description The description of the task.
+     * @param isDone Whether the task is marked as done.
+     * @throws SigmaBotException If description is empty.
      */
     public Task(String description, boolean isDone) throws SigmaBotException {
         if (description.equals("")) {
@@ -36,16 +40,16 @@ public abstract class Task {
     /**
      * Returns the status icon representing whether the task is done or not.
      *
-     * @return the status icon ("X" if done, otherwise a space)
+     * @return "X" if the task is done, otherwise a space.
      */
     public String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
+        return (isDone ? "X" : " ");
     }
 
     /**
      * Returns the description of this task.
      *
-     * @return the description of the task
+     * @return The description of the task.
      */
     public String getDescription() {
         return this.description;
@@ -54,7 +58,7 @@ public abstract class Task {
     /**
      * Returns the print message associated with this task.
      *
-     * @return the print message for this task
+     * @return The print message for this task.
      */
     public String getPrintMsg() {
         return this.printMsg;
@@ -63,12 +67,13 @@ public abstract class Task {
     /**
      * Sets the print message for this task.
      *
-     * @param printMsg the print message to set for this task
+     * @param printMsg The print message to set for this task.
      */
     public void setPrintMsg(String printMsg) {
         this.printMsg = printMsg;
     }
-        /**
+
+    /**
      * Marks this task as done by setting its status to true.
      */
     public void mark() {
@@ -83,30 +88,39 @@ public abstract class Task {
     }
 
     /**
+     * Returns whether this task is marked as done.
+     *
+     * @return True if the task is done, false otherwise.
+     */
+    public boolean getisDone() {
+        return this.isDone;
+    }
+
+    /**
      * Returns the icon representing the type of this task (e.g., Todo, Deadline, Event).
      *
-     * @return the icon representing the task type
+     * @return The icon representing the task type.
      */
     abstract public String getTaskIcon();
     
     /**
      * Returns a string encoding of this task for saving to file.
      *
-     * @return the encoded string for saving this task
+     * @return The encoded string for saving this task.
      */
     abstract public String encodeSaveFormat();
 
     /**
      * Returns a formatted string suitable for deletion confirmation messages.
      *
-     * @return formatted string containing task details for deletion display
+     * @return Formatted string containing task details for deletion display.
      */
     abstract public String getDeleteFormat();
 
     /**
      * Returns a string representation of this task, including its status and description.
      *
-     * @return the string representation of the task
+     * @return The string representation of the task.
      */
     @Override
     public String toString() {

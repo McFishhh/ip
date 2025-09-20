@@ -96,7 +96,7 @@ public class DeadlineTask extends Task {
      * @return encoded delete format of the task
      */
     public String getDeleteFormat() {
-        return this.isDone +  " deadline " + this.description + " /by " + this.deadline.format(DateTimeFormatter.ofPattern("YYYY-MM-DD"));
+        return this.isDone +  " deadline " + this.description + " /by " + this.deadline.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     /**

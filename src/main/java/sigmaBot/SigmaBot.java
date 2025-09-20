@@ -7,7 +7,6 @@ public class SigmaBot {
     public static final String GREETING = "Hello! I'm SigmaBot\r\n" + 
                                             "What can I do for you?\r\n";
     public static final String GOODBYE = "Bye. Hope to see you again soon!\r\n";
-    public static final String SEP = "____________________________________________________________\r\n";
 
     private TaskList taskList; 
     private Parser parser;
@@ -54,16 +53,16 @@ public class SigmaBot {
         return this.taskList.addTask(task);
     }
 
-    /**
-     * Adds a task at the second-to-last position in the task list.
-     *
-     * @param task the Task to add
-     * @return the updated list of tasks
-     */
-    public ArrayList<Task> addItemLast(Task task) {
-        assert task != null : "Task to add cannot be null for SigmaBot::addItem";
-        return this.taskList.addTask(task, this.taskList.size() - 1);
-    }
+    // /**
+    //  * Adds a task at the second-to-last position in the task list.
+    //  *
+    //  * @param task the Task to add
+    //  * @return the updated list of tasks
+    //  */
+    // public ArrayList<Task> addItemLast(Task task) {
+    //     assert task != null : "Task to add cannot be null for SigmaBot::addItem";
+    //     return this.taskList.addTask(task, this.taskList.size() - 1);
+    // }
     
     /**
      * Removes and returns the task at the specified index.
@@ -134,6 +133,17 @@ public class SigmaBot {
     }
 
     /**
+     * Returns whether the task at the specified index is marked as done.
+     *
+     * @param i The index of the task to check.
+     * @return True if the task is done, false otherwise.
+     */
+    public boolean getTaskisDone(int i) {
+        Task task = this.taskList.get(i);
+        return task.getisDone();
+    }
+
+    /**
      * Processes the next user input and returns the resulting task or action.
      *
      * @return the Task created or affected by the user input
@@ -160,12 +170,10 @@ public class SigmaBot {
      * Prints all tasks in the current task list to the console.
      */
     public void printTasks() {
-        System.out.print(SEP);
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < this.taskList.size() ; i += 1) {
             System.out.println(String.valueOf(i + 1) + "." + this.taskList.get(i));
         }       
-        System.out.println(SEP);
     }
 
     /**
@@ -175,12 +183,10 @@ public class SigmaBot {
      */
     public String getPrintTasks() {
         String result = "";
-        result += SEP + "\n";
         result += "Here are the tasks in your list:\n";
         for (int i = 0; i < this.taskList.size() ; i += 1) {
             result += String.valueOf(i + 1) + "." + this.taskList.get(i) + "\n";
         }       
-        result += SEP;
 
         return result;
     }
@@ -192,12 +198,10 @@ public class SigmaBot {
      */
     public void printMatchingTasks(ArrayList<Task> matchingList) {
         assert matchingList != null : "Matching list cannot be null for SigmaBot::printMatchingTasks";
-        System.out.print(SEP);
         System.out.println("Here are the matching tasks in your list:");
         for (int i = 0; i < matchingList.size() ; i += 1) {
             System.out.println(String.valueOf(i + 1) + "." + matchingList.get(i));
         }       
-        System.out.println(SEP);
     }
 
     /**
@@ -209,12 +213,10 @@ public class SigmaBot {
     public String getPrintMatchingTasks(ArrayList<Task> matchingList) {
         assert matchingList != null : "Matching list cannot be null for SigmaBot::getPrintMatchingTasks";
         String result = "";
-        result += SEP + "\n";
         result += "Here are the matching tasks in your list:" + "\n";
         for (int i = 0; i < matchingList.size() ; i += 1) {
             result += String.valueOf(i + 1) + "." + matchingList.get(i) + "\n";
         }       
-        result += SEP;
 
         return result;
     }
@@ -287,7 +289,7 @@ public class SigmaBot {
     public void run() {
         SigmaBot bot = this;
 
-        System.out.println(SEP + GREETING + SEP);
+        System.out.println(GREETING);
         
         bot.nextTask();
         try {
@@ -302,7 +304,7 @@ public class SigmaBot {
             System.out.println(e.getMessage());
         }
 
-        System.out.println(SEP + GOODBYE + SEP);
+        System.out.println(GOODBYE);
     }
 
     /**
