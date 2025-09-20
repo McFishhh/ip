@@ -7,7 +7,9 @@ import java.util.regex.Pattern;
 public class DeadlineTask extends Task {
     protected LocalDate deadline;
 
-    public static final Pattern DEADLINE_PATTERN = Pattern.compile("^(.*) /by (.*)$");
+    public static final Pattern DEADLINE_PATTERN = Pattern.compile(
+        "^(.*) /by (\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+    );
 
     /**
      * Helper method to extract deadline fields using regex.
@@ -18,12 +20,45 @@ public class DeadlineTask extends Task {
     private static String[] extractDeadlineFields(String input) {
         Matcher matcher = DEADLINE_PATTERN.matcher(input);
         if (matcher.matches()) {
-            return new String[] {
-                matcher.group(1).trim(),
-                matcher.group(2).trim()
-            };
+            String description = matcher.group(1).trim();
+            String date = matcher.group(2) + "-" + matcher.group(3) + "-" + matcher.group(4);
+            return new String[] { description, date };
         }
         return null;
+    }
+
+    /**
+     * Checks if the date in the given deadline description string is a valid calendar date.
+     * Accounts for months with 30/31 days and February with leap year logic.
+     *
+     * @param description The deadline description string (e.g. "submit assignment /by 2024-02-29")
+     * @return true if the date is valid, false otherwise
+     */
+    public static boolean isValidDate(String description) {
+        String[] fields = extractDeadlineFields(description);
+        if (fields == null) {
+            return false;
+        }
+        String[] dateParts = fields[1].split("-");
+        if (dateParts.length != 3) {
+            return false;
+        }
+        try {
+            int year = Integer.parseInt(dateParts[0]);
+            int month = Integer.parseInt(dateParts[1]);
+            int day = Integer.parseInt(dateParts[2]);
+            int[] daysInMonth = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+            // Leap year check for February
+            if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))) {
+                return day >= 1 && day <= 29;
+            }
+            if (month >= 1 && month <= 12) {
+                return day >= 1 && day <= daysInMonth[month];
+            }
+            return false;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /**
@@ -33,11 +68,8 @@ public class DeadlineTask extends Task {
      * @param deadline the deadline date
      * @throws SigmaBotException if description is empty or deadline is null
      */
-    public DeadlineTask(String description, LocalDate deadline) throws SigmaBotException{
+    private DeadlineTask(String description, LocalDate deadline) {
         super(description);
-        if (deadline == null) {
-            throw new SigmaBotException("Hey, theres no deadline!");
-        }
         this.deadline = deadline;
     }
 
@@ -65,10 +97,11 @@ public class DeadlineTask extends Task {
      */
     public static DeadlineTask initFromString(String string) {
         String[] fields = extractDeadlineFields(string);
-        if (fields != null) {
+        if (fields != null && isValidDate(string)) {
             try {
-                return new DeadlineTask(fields[0], LocalDate.parse(fields[1]));
-            } catch (Exception e) {
+                LocalDate date = LocalDate.parse(fields[1]);
+                return new DeadlineTask(fields[0], date);
+            } catch (SigmaBotException e) {
                 DeadlineTask errorTask = new DeadlineTask(fields[0], null);
                 errorTask.setPrintMsg(""); // Empty reply
                 return errorTask;
@@ -89,10 +122,11 @@ public class DeadlineTask extends Task {
      */
     public static DeadlineTask initFromString(String string, Boolean isDone) {
         String[] fields = extractDeadlineFields(string);
-        if (fields != null) {
+        if (fields != null && isValidDate(string)) {
             try {
-                return new DeadlineTask(fields[0], isDone, LocalDate.parse(fields[1]));
-            } catch (Exception e) {
+                LocalDate date = LocalDate.parse(fields[1]);
+                return new DeadlineTask(fields[0], isDone, date);
+            } catch (SigmaBotException e) {
                 DeadlineTask errorTask = new DeadlineTask(fields[0], isDone, null);
                 errorTask.setPrintMsg(""); // Empty reply
                 return errorTask;

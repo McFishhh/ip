@@ -112,7 +112,6 @@ public class Parser {
         task = createTaskFromInput(msgSplit[1]);
 
         if (task == null || !task.isValid()) {
-            System.out.println("INVALID");
             return task;
         }
 
@@ -313,7 +312,8 @@ public class Parser {
             return TodoTask.initFromString(description);
         } else if (isDeadlineTask()) {
             // Only verify format using regex
-            if (DeadlineTask.DEADLINE_PATTERN.matcher(description).matches()) {
+            if (DeadlineTask.DEADLINE_PATTERN.matcher(description).matches() 
+                && isValidDeadlineInput(input)) {
                 return DeadlineTask.initFromString(description);
             } else {
                 Task errorTask = new TodoTask("");
@@ -482,13 +482,34 @@ public class Parser {
 
     /**
      * Checks if the current input represents a valid task creation command.
+     * need to setInput() of parser first 
      *
      * @return True if the input is a todo, deadline, or event command, false otherwise.
      */
     public boolean isValidTask() {
-        return isTodoTask() || isDeadlineTask() || isEventTask();
+        String[] deadlineDescription = input.split(" ", 2);
+        if (deadlineDescription.length == 2) {
+            return isTodoTask() || (isDeadlineTask() && isValidDeadlineInput(input)) || isEventTask();
+        }
+
+        return false;
     }
 
+    /**
+     * Checks if the given input string is a valid deadline command input using DeadlineTask's regex.
+     *
+     * @param input The input string to check (should not include the "deadline" command word).
+     * @return True if the input matches the deadline pattern, false otherwise.
+     */
+    public boolean isValidDeadlineInput(String input) {
+        String[] stringSplit = input.split(" ", 2);
+        if (stringSplit.length == 2 && DeadlineTask.isValidDate(stringSplit[1])) {
+            return sigmabot.DeadlineTask.DEADLINE_PATTERN.matcher(input).matches();
+        }
+
+        return false;
+    }
+    
     /**
      * Checks if the given string is a valid task command ("todo", "deadline", or "event").
      *
@@ -525,5 +546,4 @@ public class Parser {
     private boolean isMarkCommand() {
         return isMark() || isUnmark();
     }
-
 }
