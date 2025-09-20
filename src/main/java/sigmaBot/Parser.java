@@ -351,7 +351,7 @@ public class Parser {
     private Task handleFindCommand(String[] msgSplit, SigmaBot bot) {
         Task task = new TodoTask(String.join(" ", msgSplit));
         
-        String keyword = msgSplit[1];
+        String keyword = msgSplit[1].trim();
         ArrayList<Task> matchingList = bot.findTasks(keyword);
         task.setPrintMsg(bot.getPrintMatchingTasks(matchingList));
         
