@@ -1,6 +1,6 @@
 # SigmaBot User Guide
 
-![SigmaBot Screenshot](./images/sigmabot-screenshot.png) <!-- Update with your actual screenshot path -->
+![SigmaBot Screenshot](Ui.png)
 
 SigmaBot is a task management chatbot for desktop. It helps you organize your todos, deadlines, and events, and supports undo and search!
 
