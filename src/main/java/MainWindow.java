@@ -5,10 +5,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-
+import sigmabot.SigmaBot;
 import javafx.application.Platform;
-
-import sigmaBot.SigmaBot;
 
 /**
  * Controller for the main GUI.
@@ -26,7 +24,7 @@ public class MainWindow extends AnchorPane {
     private SigmaBot sigmaBot;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/crying_wojack.png"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/gigachad.jpg"));
+    private Image sigmaBotImage = new Image(this.getClass().getResourceAsStream("/images/gigachad.jpg")); 
 
     @FXML
     public void initialize() {
@@ -39,7 +37,7 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
+     * Creates two dialog boxes, one echoing user input and the other containing SigmsBot's reply and then appends them to
      * the dialog container. Clears the user input after processing.
      */
     @FXML
@@ -48,11 +46,11 @@ public class MainWindow extends AnchorPane {
         if (sigmaBot.isBye(input)) {
             Platform.exit();
         } 
-        // String input = sigmaBot.nextTask().getPrintMsg();
+
         String response = sigmaBot.nextTaskfromString(input).getPrintMsg();
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, dukeImage)
+                DialogBox.getSigmaBotDialog(response, sigmaBotImage)
         );
         userInput.clear();
     }

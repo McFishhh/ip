@@ -1,4 +1,4 @@
-package sigmaBot;
+package sigmabot;
 import java.util.Scanner;
 
 public class Ui {
@@ -9,7 +9,6 @@ public class Ui {
     public static final String GREETING = "Hello! I'm SigmaBot\r\n" + 
                                             "What can I do for you?\r\n";
     public static final String GOODBYE = "Bye. Hope to see you again soon!\r\n";
-    public static final String SEP = "____________________________________________________________\r\n";
 
     /**
      * Constructs a Ui object and initializes the scanner and parser.
@@ -34,7 +33,7 @@ public class Ui {
                 break;
             }
             
-            System.out.println(SEP + "Hey! that doesn't make any sense!\n" + SEP);
+            System.out.println("Hey! that doesn't make any sense!\n");
         }
 
         return input;

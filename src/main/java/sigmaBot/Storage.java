@@ -1,4 +1,4 @@
-package sigmaBot;
+package sigmabot;
 import java.util.ArrayList;
 
 import java.nio.file.Path;
@@ -15,7 +15,6 @@ public class Storage {
     private ArrayList<Task> todo;
 
     private String savePath = "saves/savedTasks.txt";
-    public static final String SEP = "____________________________________________________________\r\n";
 
     /**
      * Constructs a Storage object and initializes the todo list.
@@ -40,8 +39,6 @@ public class Storage {
 
     /**
      * Loads tasks from the save file into the todo list.
-     *
-     * 
      * 
      * @return the list of loaded tasks
      * @throws IOException if an I/O error occurs while reading the file
@@ -51,7 +48,7 @@ public class Storage {
         
         // check for existence of filepath 
         if (!Files.exists(path)) {
-            System.out.println(SEP + "No existing save file :(\n" + SEP);
+            System.out.println("No existing save file :(\n");
             return todo;
         }
 
@@ -60,17 +57,18 @@ public class Storage {
         String line;
         while ((line = bufferReader.readLine()) != null) { 
             String[] lineSplit = line.split(",");
+            String taskSymbol = lineSplit[0];
 
-            if (lineSplit[0].equals("T")) {
+            if (taskSymbol.equals("T")) {
                 todo.add(TodoTask.decodeSaveFormat(line));
-            } else if (lineSplit[0].equals("D")) {
+            } else if (taskSymbol.equals("D")) {
                 todo.add(DeadlineTask.decodeSaveFormat(line));
-            } else if (lineSplit[0].equals("E")) {
+            } else if (taskSymbol.equals("E")) {
                 todo.add(EventTask.decodeSaveFormat(line));
             }
         }
 
-        System.out.println(SEP + "Successfully loaded tasks! :D\n" + SEP);
+        System.out.println("Successfully loaded tasks! :D\n");
         bufferReader.close();
         return todo;
     }
@@ -92,14 +90,13 @@ public class Storage {
         }
 
         // saves file to savePath
-        // FileWriter fileWriter = new FileWriter(savePath, true);
         FileWriter fileWriter = new FileWriter(savePath);
 
         for (Task task : todoToSave.getTaskList()) {
             fileWriter.write(task.encodeSaveFormat() + "\n");
         }
 
-        System.out.println(SEP + "Successfully saved tasks!\n" + SEP);
+        System.out.println("Successfully saved tasks!\n");
         fileWriter.close();
         return true;
     }

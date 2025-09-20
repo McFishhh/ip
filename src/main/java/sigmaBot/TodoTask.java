@@ -1,4 +1,4 @@
-package sigmaBot;
+package sigmabot;
 public class TodoTask extends Task {
     
     /**
@@ -30,6 +30,13 @@ public class TodoTask extends Task {
         return new TodoTask(string);
     }
 
+    /**
+     * Parses a string to create a new TodoTask object.
+     *
+     * @param string the string to parse
+     * @param isDone whether the task is marked as done
+     * @return a new TodoTask parsed from the string
+     */
     public static TodoTask initFromString(String string, Boolean isDone) {
         return new TodoTask(string, isDone);
     }
@@ -63,6 +70,13 @@ public class TodoTask extends Task {
         return new TodoTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]));
     }
 
+
+    /**
+     * Encodes the string as a delete format, to be decoded upon an undo 
+     * call, to reverse the action 
+     * 
+     * @return encoded delete format of the task
+     */
     public String getDeleteFormat() {
         return this.isDone + " todo " + this.description;
     }
