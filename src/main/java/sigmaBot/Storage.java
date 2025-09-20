@@ -57,12 +57,13 @@ public class Storage {
         String line;
         while ((line = bufferReader.readLine()) != null) { 
             String[] lineSplit = line.split(",");
+            String taskSymbol = lineSplit[0];
 
-            if (lineSplit[0].equals("T")) {
+            if (taskSymbol.equals("T")) {
                 todo.add(TodoTask.decodeSaveFormat(line));
-            } else if (lineSplit[0].equals("D")) {
+            } else if (taskSymbol.equals("D")) {
                 todo.add(DeadlineTask.decodeSaveFormat(line));
-            } else if (lineSplit[0].equals("E")) {
+            } else if (taskSymbol.equals("E")) {
                 todo.add(EventTask.decodeSaveFormat(line));
             }
         }

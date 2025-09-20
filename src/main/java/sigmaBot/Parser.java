@@ -110,8 +110,14 @@ public class Parser {
         }
         
         task = createTaskFromInput(msgSplit[1]);
+
+        if (task == null || !task.isValid()) {
+            System.out.println("INVALID");
+            return task;
+        }
+
         bot.addItem(task);
-        
+
         String successMessage = "Got it. I've added this task:\n" +
                 task + "\nNow you have " + bot.getNumTask() +
                 " tasks in the list." + "\r\n";
@@ -240,7 +246,7 @@ public class Parser {
     private Task undoDelete(SigmaBot bot, Task task, String[] prevInputSplit) {
         String[] prevInputSplitAgain = prevInputSplit[2].split(" ", 3);
 
-        int deleteIndex = Integer.valueOf(prevInputSplit[1]);
+        int deleteIndex = Integer.valueOf(prevInputSplit[1]) - 1;
         Boolean isDone = Boolean.parseBoolean(prevInputSplitAgain[0]);
         String taskType = prevInputSplitAgain[1];
         String taskDescription = prevInputSplitAgain[2];
@@ -271,22 +277,33 @@ public class Parser {
      * @return The Task with updated print message after deletion.
      */
     private Task handleDeleteCommand(Task task, SigmaBot bot, String[] msgSplit) {
-        Task deletedTask = bot.deleteItem(Integer.parseInt(msgSplit[1]) - 1);
-        
-        int taskNumber = Integer.valueOf(msgSplit[1]);
-        this.prevInput = "delete " + (taskNumber - 1) + " ";
-        this.prevInput += deletedTask.getDeleteFormat();
-        
-        String deletionMessage = "Noted. I've removed this task:\n" +
-                deletedTask + "\nNow you have " + bot.getNumTask() +
-                " tasks in the list." + "\r\n";
-        task.setPrintMsg(deletionMessage);
-        
-        return task;
+        try {
+            int taskIndex = Integer.parseInt(msgSplit[1]) - 1;
+            if (!bot.getTodo().isValidIndex(taskIndex)) {
+                task.setPrintMsg("Hey! Task number is out of range\n");
+                return task;
+            }
+            Task deletedTask = bot.deleteItem(taskIndex);
+
+            int taskNumber = taskIndex + 1;
+            this.prevInput = "delete " + taskNumber + " ";
+            this.prevInput += deletedTask.getDeleteFormat();
+
+            String deletionMessage = "Noted. I've removed this task:\n" +
+                    deletedTask + "\nNow you have " + bot.getNumTask() +
+                    " tasks in the list." + "\r\n";
+            task.setPrintMsg(deletionMessage);
+
+            return task;
+        } catch (NumberFormatException e) {
+            task.setPrintMsg("Hey! Please enter a valid task number\n");
+            return task;
+        }
     }
 
     /**
      * Creates a task from the given input description based on the current command type.
+     * Only verifies input format using regex for deadline and event tasks.
      *
      * @param description The task description to create the task from.
      * @return The created Task object (TodoTask, DeadlineTask, or EventTask).
@@ -295,11 +312,26 @@ public class Parser {
         if (isTodoTask()) {
             return TodoTask.initFromString(description);
         } else if (isDeadlineTask()) {
-            return DeadlineTask.initFromString(description);
+            // Only verify format using regex
+            if (DeadlineTask.DEADLINE_PATTERN.matcher(description).matches()) {
+                return DeadlineTask.initFromString(description);
+            } else {
+                Task errorTask = new TodoTask("");
+                errorTask.setPrintMsg(""); // Empty reply for invalid format
+                return errorTask;
+            }
         } else if (isEventTask()) {
-            return EventTask.initFromString(description);
+            // Only verify format using regex
+            if (EventTask.EVENT_PATTERN.matcher(description).matches()) {
+                return EventTask.initFromString(description);
+            } else {
+                Task errorTask = new TodoTask("");
+                errorTask.setPrintMsg(""); // Empty reply for invalid format
+                return errorTask;
+            }
         }
-        return new TodoTask(description);
+
+        return null;
     }
 
     /**

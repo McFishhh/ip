@@ -14,10 +14,7 @@ public abstract class Task {
      * @param description The description of the task.
      * @throws SigmaBotException If description is empty.
      */
-    public Task(String description) throws SigmaBotException {
-        if (description.equals("")) {
-            throw new SigmaBotException("Hey, theres no description!");
-        }
+    public Task(String description) {
         this.description = description;
         this.isDone = false;
     }
@@ -29,10 +26,7 @@ public abstract class Task {
      * @param isDone Whether the task is marked as done.
      * @throws SigmaBotException If description is empty.
      */
-    public Task(String description, boolean isDone) throws SigmaBotException {
-        if (description.equals("")) {
-            throw new SigmaBotException("Hey, theres no description!");
-        }
+    public Task(String description, boolean isDone) {
         this.description = description;
         this.isDone = isDone;
     }
@@ -43,7 +37,7 @@ public abstract class Task {
      * @return "X" if the task is done, otherwise a space.
      */
     public String getStatusIcon() {
-        return (isDone ? "X" : " ");
+        return (isDone ? "X" : "  ");
     }
 
     /**
@@ -94,6 +88,10 @@ public abstract class Task {
      */
     public boolean getisDone() {
         return this.isDone;
+    }
+
+    public boolean isValid() {
+        return !this.description.equals("");
     }
 
     /**

@@ -52,17 +52,6 @@ public class SigmaBot {
         assert task != null : "Task to add cannot be null for SigmaBot::addItem";
         return this.taskList.addTask(task);
     }
-
-    // /**
-    //  * Adds a task at the second-to-last position in the task list.
-    //  *
-    //  * @param task the Task to add
-    //  * @return the updated list of tasks
-    //  */
-    // public ArrayList<Task> addItemLast(Task task) {
-    //     assert task != null : "Task to add cannot be null for SigmaBot::addItem";
-    //     return this.taskList.addTask(task, this.taskList.size() - 1);
-    // }
     
     /**
      * Removes and returns the task at the specified index.

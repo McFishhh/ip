@@ -80,4 +80,14 @@ public class TaskList {
     public void setTaskList(ArrayList<Task> taskList) {
         this.taskList = taskList;
     }
+
+    /**
+     * Checks if the given index is a valid index in the task list.
+     *
+     * @param index the index to check
+     * @return true if the index is valid, false otherwise
+     */
+    public boolean isValidIndex(int index) {
+        return index >= 0 && index < taskList.size();
+    }
 }
