@@ -14,3 +14,5 @@
 - help to modularize methods in Parser.java to reduce method length 
 - help move related methods to be next to each other in the file for Parser.java.
 - help rename all occurances of duke and Duke to sigmaBot and SigmaBot for the JavaFX related classes
+- generate Regex for DeadlineTask and EventTask
+- generate README.md as per github official specifications
