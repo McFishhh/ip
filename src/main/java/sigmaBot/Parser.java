@@ -261,7 +261,7 @@ public class Parser {
         }
         bot.addItem(task, deleteIndex);
         task.setPrintMsg("I've undone the previous command!\n" +
-                "I've and added this task:\n" +
+                "I've added this task:\n" +
                 task + "\nNow you have " + bot.getNumTask() +
                 " tasks in the list." + "\r\n");
         return task;
