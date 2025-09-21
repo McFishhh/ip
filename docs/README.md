@@ -59,7 +59,7 @@ todo DESCRIPTION
 todo read book
 ```
 
-<br/></br>
+<br/>
 
 ### Adding a Deadline: `deadline`
 Adds a deadline task with a specific date.
@@ -73,7 +73,7 @@ deadline DESCRIPTION /by yyyy-MM-dd
 deadline submit report /by 2025-09-21
 ```
 
-<br/></br>
+<br/>
 
 ### Adding an Event: `event`
 Adds an event task with start and end times.
@@ -87,7 +87,7 @@ event DESCRIPTION /from START /to END
 event meeting /from 2pm /to 4pm
 ```
 
-<br/></br>
+<br/>
 
 ### Listing All Tasks: `list`
 Shows all tasks.
@@ -97,7 +97,7 @@ Shows all tasks.
 list
 ```
 
-<br/></br>
+<br/>
 
 ### Marking a Task: `mark`
 Marks a task as done.
@@ -111,7 +111,7 @@ mark INDEX
 mark 2
 ```
 
-<br/></br>
+<br/>
 
 ### Unmarking a Task: `unmark`
 Unmarks a task.
@@ -125,7 +125,7 @@ unmark INDEX
 unmark 2
 ```
 
-<br/></br>
+<br/>
 
 ### Deleting a Task: `delete`
 Deletes a task.
@@ -139,7 +139,7 @@ delete INDEX
 delete 3
 ```
 
-<br/></br>
+<br/>
 
 ### Finding Tasks: `find`
 Finds tasks containing the keyword.
@@ -153,7 +153,7 @@ find KEYWORD
 find book
 ```
 
-<br/></br>
+<br/>
 
 ### Undoing the Previous Command: `undo`
 Undoes the previous command.
@@ -163,7 +163,7 @@ Undoes the previous command.
 undo
 ```
 
-<br/></br>
+<br/>
 
 ### Exiting SigmaBot: `bye`
 Exits SigmaBot and saves your tasks.
