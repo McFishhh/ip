@@ -1,8 +1,21 @@
 # SigmaBot User Guide
 
-![SigmaBot Screenshot](docs/Ui.png) <!-- Update with your actual screenshot path -->
+![SigmaBot Screenshot](docs/Ui.png)
 
-SigmaBot is a task management chatbot for desktop. It helps you organize your todos, deadlines, and events, and supports undo and search!
+SigmaBot is a desktop chatbot for managing tasks, optimized for fast command input with a modern GUI. You can quickly add todos, deadlines, and events, and manage them efficiently with simple commands!
+
+---
+
+## Quick Start
+
+1. Ensure you have Java 17 or above installed on your computer.
+2. Download the latest SigmaBot `.jar` file from [GitHub Releases](https://github.com/McFishhh/ip/releases).
+3. Place the `.jar` file in your desired folder.
+4. Open a terminal, `cd` into the folder, and run:
+   ```
+   java -jar SigmaBot.jar
+   ```
+5. The GUI will appear. Type commands in the input box and press Enter for SigmaBot to start tracking your tasks!
 
 ---
 
@@ -14,141 +27,188 @@ SigmaBot is a task management chatbot for desktop. It helps you organize your to
 - List all tasks
 - Find tasks by keyword
 - Undo previous command
-- Save and load tasks from file
+- Save and load tasks automatically
 - Robust input validation (including date checks)
-- Error messages for invalid commands
+- Friendly error messages for invalid commands
 - GUI support (JavaFX)
 
 ---
 
-## Command List
+## Command Format Notes
 
-| Command | Format | Example | Description |
-|---------|--------|---------|-------------|
-| Add Todo | `todo <description>` | `todo read book` | Adds a todo task |
-| Add Deadline | `deadline <description> /by yyyy-MM-dd` | `deadline submit report /by 2025-09-21` | Adds a deadline task |
-| Add Event | `event <description> /from <start> /to <end>` | `event meeting /from 2pm /to 4pm` | Adds an event task |
-| List Tasks | `list` | `list` | Shows all tasks |
-| Mark Task | `mark <task_number>` | `mark 2` | Marks a task as done |
-| Unmark Task | `unmark <task_number>` | `unmark 2` | Unmarks a task |
-| Delete Task | `delete <task_number>` | `delete 3` | Deletes a task |
-| Find Tasks | `find <keyword>` | `find book` | Finds tasks containing the keyword |
-| Undo | `undo` | `undo` | Undoes the previous command |
-| Exit | `bye` | `bye` | Exits SigmaBot |
+- Words in UPPER_CASE are parameters to be supplied by the user.
+  - Example: `todo DESCRIPTION`
+- Extra parameters for commands that do not take them are ignored.
+  - Example: `list`, `bye`
 
 ---
 
-## Adding Deadlines
+## Feature Details
 
-To add a deadline task, use the following command format:
+### Adding a Todo: `todo`
+Adds a todo task.
 
-Example:  
-`deadline submit assignment /by 2025-09-21`
-
-Expected outcome:
+**Format:**  
 ```
-Got it. I've added this task:
-[D][ ] submit assignment (by: 2025-09-21)
-Now you have 1 tasks in the list.
+todo DESCRIPTION
+```
+**Example:**  
+```
+todo read book
+```
+
+<br/></br>
+
+### Adding a Deadline: `deadline`
+Adds a deadline task with a specific date.
+
+**Format:**  
+```
+deadline DESCRIPTION /by yyyy-MM-dd
+```
+**Example:**  
+```
+deadline submit report /by 2025-09-21
+```
+
+<br/></br>
+
+### Adding an Event: `event`
+Adds an event task with start and end times.
+
+**Format:**  
+```
+event DESCRIPTION /from START /to END
+```
+**Example:**  
+```
+event meeting /from 2pm /to 4pm
+```
+
+<br/></br>
+
+### Listing All Tasks: `list`
+Shows all tasks.
+
+**Format:**  
+```
+list
+```
+
+<br/></br>
+
+### Marking a Task: `mark`
+Marks a task as done.
+
+**Format:**  
+```
+mark INDEX
+```
+**Example:**  
+```
+mark 2
+```
+
+<br/></br>
+
+### Unmarking a Task: `unmark`
+Unmarks a task.
+
+**Format:**  
+```
+unmark INDEX
+```
+**Example:**  
+```
+unmark 2
+```
+
+<br/></br>
+
+### Deleting a Task: `delete`
+Deletes a task.
+
+**Format:**  
+```
+delete INDEX
+```
+**Example:**  
+```
+delete 3
+```
+
+<br/></br>
+
+### Finding Tasks: `find`
+Finds tasks containing the keyword.
+
+**Format:**  
+```
+find KEYWORD
+```
+**Example:**  
+```
+find book
+```
+
+<br/></br>
+
+### Undoing the Previous Command: `undo`
+Undoes the previous command.
+
+**Format:**  
+```
+undo
+```
+
+<br/></br>
+
+### Exiting SigmaBot: `bye`
+Exits SigmaBot and saves your tasks.
+
+**Format:**  
+```
+bye
 ```
 
 ---
 
-## Adding Events
+## Saving and Editing Data
 
-To add an event task, use the following command format:
-
-Example:  
-`event project meeting /from 14:00 /to 16:00`
-
-Expected outcome:
-```
-Got it. I've added this task:
-[E][ ] project meeting (from: 14:00 to: 16:00)
-Now you have 2 tasks in the list.
-```
+- Tasks are updated after any command that changes the data, and saved when the program exits via the `bye` command.
+- Data is stored in a text file.
+  - save path: `saves\savedTasks.txt`
+- **Caution:** Editing the data file manually may cause SigmaBot to ignore malformed lines.
 
 ---
 
-## Marking and Unmarking Tasks
+## FAQ
 
-Example:  
-`mark 1`
-
-Expected outcome:
-```
-Nice! I've marked this task as done:
-[D][X] submit assignment (by: 2025-09-21)
-```
-
-Example:  
-`unmark 1`
-
-Expected outcome:
-```
-OK, I've marked this task as not done yet:
-[D][ ] submit assignment (by: 2025-09-21)
-```
+**Q:** How do I transfer my tasks to another computer?  
+**A:** Copy the save file from your SigmaBot folder to the same location on the other computer.
 
 ---
 
-## Deleting Tasks
+## Known Issues
 
-Example:  
-`delete 2`
-
-Expected outcome:
-```
-Noted. I've removed this task:
-[E][ ] project meeting (from: 14:00 to: 16:00)
-Now you have 1 tasks in the list.
-```
+- Invalid date formats or commands are ignored.
+- GUI may not display correctly on some screen resolutions.
+- Force exiting the GUI will cause changes to not be saved. 
 
 ---
 
-## Finding Tasks
 
-Example:  
-`find assignment`
+## Command Summary
 
-Expected outcome:
-```
-Here are the matching tasks in your list:
-1. [D][ ] submit assignment (by: 2025-09-21)
-```
-
----
-
-## Undoing Commands
-
-Example:  
-`undo`
-
-Expected outcome:
-> Reverse effect of previous command. 
-
----
-
-## Exiting SigmaBot
-
-Example:  
-`bye`
-
-Expected outcome:
-> Tasks are saved, and progarm exits!
-
----
-
-## More Features
-
-- All tasks are saved automatically and loaded when you start SigmaBot.
-- Invalid commands or dates are ignored.
-
----
-
-## Getting Started
-
-1. Download and run SigmaBot.
-2. Type your commands in the input box.
-3. See your tasks organized instantly!
-
+| Action      | Format                                   | Example                                   |
+|-------------|------------------------------------------|-------------------------------------------|
+| Add Todo    | `todo DESCRIPTION`                       | `todo read book`                          |
+| Add Deadline| `deadline DESCRIPTION /by yyyy-MM-dd`    | `deadline submit report /by 2025-09-21`   |
+| Add Event   | `event DESCRIPTION /from START /to END`  | `event meeting /from 2pm /to 4pm`         |
+| Mark        | `mark INDEX`                             | `mark 2`                                  |
+| Unmark      | `unmark INDEX`                           | `unmark 2`                                |
+| Delete      | `delete INDEX`                           | `delete 3`                                |
+| Find        | `find KEYWORD`                           | `find book`                               |
+| List        | `list`                                   |                                                   |
+| Undo        | `undo`                                   |                                                   |
+| Exit        | `bye`                                  |                                                   |
