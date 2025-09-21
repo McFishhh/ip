@@ -163,9 +163,20 @@ public class DeadlineTask extends Task {
      * @param encoded the encoded string to decode
      * @return a new DeadlineTask decoded from the string
      */
-    public static DeadlineTask decodeSaveFormat(String encoded) {
+    public static DeadlineTask decodeSaveFormat(String encoded) throws SigmaBotReadSaveException {
         String[] encodedSplit = encoded.split(",");
-        return new DeadlineTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]), LocalDate.parse(encodedSplit[3]));
+        if (encodedSplit.length < 4) {
+            throw new SigmaBotReadSaveException("Malformed deadline task line: " + encoded);
+        }
+        try {
+            return new DeadlineTask(
+                encodedSplit[2],
+                Boolean.parseBoolean(encodedSplit[1]),
+                java.time.LocalDate.parse(encodedSplit[3])
+            );
+        } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException | java.time.format.DateTimeParseException e) {
+            throw new SigmaBotReadSaveException("Invalid date or format in deadline task line: " + encoded);
+        }
     }
 
     /**

@@ -65,8 +65,11 @@ public class TodoTask extends Task {
      * @param encoded the encoded string to decode
      * @return a new TodoTask decoded from the string
      */
-    public static TodoTask decodeSaveFormat(String encoded) {
+    public static TodoTask decodeSaveFormat(String encoded) throws SigmaBotReadSaveException {
         String[] encodedSplit = encoded.split(",");
+        if (encodedSplit.length < 3) {
+            throw new SigmaBotReadSaveException("Malformed todo task line: " + encoded);
+        }
         return new TodoTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]));
     }
 

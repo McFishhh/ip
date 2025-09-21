@@ -53,30 +53,41 @@ public class Storage {
      */
     public ArrayList<Task> loadTasks() throws IOException {
         Path path = Paths.get(savePath);
-        
-        // check for existence of filepath 
+
         if (!Files.exists(path)) {
             System.out.println("No existing save file :(\n");
             return todo;
         }
 
-        // read in files one line at a time and creates Tasks to add to todo
+        int lineNumber = 0;
+        int skippedLines = 0;
         BufferedReader bufferReader = new BufferedReader(new FileReader(savePath));
         String line;
-        while ((line = bufferReader.readLine()) != null) { 
-            String[] lineSplit = line.split(",");
-            String taskSymbol = lineSplit[0];
+        while ((line = bufferReader.readLine()) != null) {
+            lineNumber++;
+            try {
+                String[] lineSplit = line.split(",");
+                String taskSymbol = lineSplit[0];
 
-            if (taskSymbol.equals("T")) {
-                todo.add(TodoTask.decodeSaveFormat(line));
-            } else if (taskSymbol.equals("D")) {
-                todo.add(DeadlineTask.decodeSaveFormat(line));
-            } else if (taskSymbol.equals("E")) {
-                todo.add(EventTask.decodeSaveFormat(line));
+                if (taskSymbol.equals("T")) {
+                    todo.add(TodoTask.decodeSaveFormat(line));
+                } else if (taskSymbol.equals("D")) {
+                    todo.add(DeadlineTask.decodeSaveFormat(line));
+                } else if (taskSymbol.equals("E")) {
+                    todo.add(EventTask.decodeSaveFormat(line));
+                } else {
+                    throw new IllegalArgumentException("Unknown task type: " + taskSymbol);
+                }
+            } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException | SigmaBotReadSaveException e) {
+                skippedLines++;
+                System.out.println("Warning: Skipped malformed line " + lineNumber + ": " + line);
             }
         }
 
         System.out.println("Successfully loaded tasks! :D\n");
+        if (skippedLines > 0) {
+            System.out.println("Skipped " + skippedLines + " malformed line(s) in save file.");
+        }
         bufferReader.close();
         return todo;
     }

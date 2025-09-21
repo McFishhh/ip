@@ -17,3 +17,4 @@
 - generate Regex for DeadlineTask and EventTask
 - generate README.md as per github official specifications
 - generate JUnit testcases for Storage.java
+- generate SigmaBotReadSaveException to handle malformed lines when loading saves

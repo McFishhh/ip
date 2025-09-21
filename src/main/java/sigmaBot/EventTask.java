@@ -134,9 +134,13 @@ public class EventTask extends Task {
      *
      * @param encoded the encoded string to decode
      * @return a new EventTask decoded from the string
+     * @throws SigmaBotReadSaveException if the encoded string is malformed
      */
-    public static EventTask decodeSaveFormat(String encoded) {
+    public static EventTask decodeSaveFormat(String encoded) throws SigmaBotReadSaveException {
         String[] encodedSplit = encoded.split(",");
+        if (encodedSplit.length < 5) {
+            throw new SigmaBotReadSaveException("Malformed event task line: " + encoded);
+        }
         return new EventTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]), encodedSplit[3], encodedSplit[4]);
     }
 
