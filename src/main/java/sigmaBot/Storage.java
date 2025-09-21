@@ -13,7 +13,6 @@ import java.io.BufferedReader;
 
 public class Storage {
     private ArrayList<Task> todo;
-
     private String savePath = "saves/savedTasks.txt";
 
     /**
@@ -47,9 +46,10 @@ public class Storage {
 
     /**
      * Loads tasks from the save file into the todo list.
-     * 
+     *
      * @return the list of loaded tasks
      * @throws IOException if an I/O error occurs while reading the file
+     * @throws SigmaBotReadSaveException if a line in the save file cannot be decoded
      */
     public ArrayList<Task> loadTasks() throws IOException {
         Path path = Paths.get(savePath);
@@ -60,36 +60,46 @@ public class Storage {
         }
 
         int lineNumber = 0;
-        int skippedLines = 0;
         BufferedReader bufferReader = new BufferedReader(new FileReader(savePath));
         String line;
+        
         while ((line = bufferReader.readLine()) != null) {
             lineNumber++;
-            try {
-                String[] lineSplit = line.split(",");
-                String taskSymbol = lineSplit[0];
-
-                if (taskSymbol.equals("T")) {
-                    todo.add(TodoTask.decodeSaveFormat(line));
-                } else if (taskSymbol.equals("D")) {
-                    todo.add(DeadlineTask.decodeSaveFormat(line));
-                } else if (taskSymbol.equals("E")) {
-                    todo.add(EventTask.decodeSaveFormat(line));
-                } else {
-                    throw new IllegalArgumentException("Unknown task type: " + taskSymbol);
-                }
-            } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException | SigmaBotReadSaveException e) {
-                skippedLines++;
-                System.out.println("Warning: Skipped malformed line " + lineNumber + ": " + line);
-            }
+            tryAddTaskFromLine(line, lineNumber);
         }
 
         System.out.println("Successfully loaded tasks! :D\n");
-        if (skippedLines > 0) {
-            System.out.println("Skipped " + skippedLines + " malformed line(s) in save file.");
-        }
         bufferReader.close();
         return todo;
+    }
+
+    /**
+     * Attempts to decode and add a task from a line. Returns true if successful.
+     */
+    private boolean tryAddTaskFromLine(String line, int lineNumber)  {
+        String[] lineSplit = line.split(",");
+        if (lineSplit.length == 0) return false;
+        String taskSymbol = lineSplit[0];
+        try {
+            switch (taskSymbol) {
+                case "T":
+                    todo.add(TodoTask.decodeSaveFormat(line));
+                    break;
+                case "D":
+                    todo.add(DeadlineTask.decodeSaveFormat(line));
+                    break;
+                case "E":
+                    todo.add(EventTask.decodeSaveFormat(line));
+                    break;
+                default:
+                    throw new SigmaBotReadSaveException("Unknown task type at line " + lineNumber + ": " + line);
+            }
+        } catch (SigmaBotReadSaveException e) {
+            System.out.println("Line: " + lineNumber + "\n" + e.getMessage() + "\n");
+            return false;
+        } 
+
+        return true;
     }
 
     /**
@@ -106,7 +116,6 @@ public class Storage {
             parent.mkdirs();
         }
 
-        // saves file to savePath
         FileWriter fileWriter = new FileWriter(savePath);
 
         for (Task task : todoToSave.getTaskList()) {

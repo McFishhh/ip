@@ -25,7 +25,7 @@ public class SigmaBot {
  
         try {
             this.loadTasks(this.storage); // load tasks
-        } catch (IOException e) {
+        } catch (IOException | SigmaBotReadSaveException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -216,7 +216,7 @@ public class SigmaBot {
      * @param storage the Storage instance to load tasks from
      * @throws IOException if there's an error reading from storage
      */
-    private void loadTasks(Storage storage) throws IOException {
+    private void loadTasks(Storage storage) throws IOException, SigmaBotReadSaveException {
         taskList.setTaskList(storage.loadTasks());
     }
 

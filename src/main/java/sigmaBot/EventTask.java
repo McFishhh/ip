@@ -140,8 +140,19 @@ public class EventTask extends Task {
         String[] encodedSplit = encoded.split(",");
         if (encodedSplit.length < 5) {
             throw new SigmaBotReadSaveException("Malformed event task line: " + encoded);
+        } 
+        
+        String boolStr = encodedSplit[1].trim();
+        if (!"true".equals(boolStr) && !"false".equals(boolStr)) {
+            throw new SigmaBotReadSaveException("Invalid boolean value for isDone in EventTask: " + boolStr);
         }
-        return new EventTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]), encodedSplit[3], encodedSplit[4]);
+
+        return new EventTask(
+            encodedSplit[2],
+            Boolean.parseBoolean(boolStr),
+            encodedSplit[3],
+            encodedSplit[4]
+        );
     }
 
     /**

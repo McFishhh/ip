@@ -69,8 +69,14 @@ public class TodoTask extends Task {
         String[] encodedSplit = encoded.split(",");
         if (encodedSplit.length < 3) {
             throw new SigmaBotReadSaveException("Malformed todo task line: " + encoded);
+        } 
+
+        String boolStr = encodedSplit[1].trim();
+        if (!"true".equals(boolStr) && !"false".equals(boolStr)) {
+            throw new SigmaBotReadSaveException("Invalid boolean value for isDone in TodoTask: " + boolStr);
         }
-        return new TodoTask(encodedSplit[2], Boolean.parseBoolean(encodedSplit[1]));
+
+        return new TodoTask(encodedSplit[2], Boolean.parseBoolean(boolStr));
     }
 
 
