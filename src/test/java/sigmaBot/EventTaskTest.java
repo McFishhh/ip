@@ -45,7 +45,7 @@ public class EventTaskTest {
     @Test
     public void toStringTest() {
         EventTask task = EventTask.initFromString("fly /from 1212-12-12 /to 0420-42-42");
-        String expected = "[E][ ] fly (from: 1212-12-12 to: 0420-42-42)";
+        String expected = "[E][  ] fly (from: 1212-12-12 to: 0420-42-42)";
         
         assertEquals(expected, task.toString());
     }

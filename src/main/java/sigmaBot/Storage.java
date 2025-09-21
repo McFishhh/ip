@@ -20,7 +20,15 @@ public class Storage {
      * Constructs a Storage object and initializes the todo list.
      */
     public Storage() {
-        todo = new ArrayList<Task>();
+        this.todo = new ArrayList<Task>();
+    }
+
+    /**
+     * Constructs a Storage object and initializes the todo list.
+     */
+    public Storage(String savePath) {
+        this.todo = new ArrayList<Task>();
+        this.savePath = savePath;
     }
 
     public ArrayList<Task> findTasks(TaskList taskList, String keyword) {
@@ -82,11 +90,9 @@ public class Storage {
      */
     public boolean saveTasks(TaskList todoToSave) throws IOException {
         File file = new File(savePath);
-
-        // create new dir and file if it doesnt exist 
-        if (!Files.exists(Paths.get(savePath))) {
-            file.getParentFile().mkdir();
-            file.createNewFile();
+        File parent = file.getParentFile();
+        if (parent != null && !parent.exists()) {
+            parent.mkdirs();
         }
 
         // saves file to savePath
