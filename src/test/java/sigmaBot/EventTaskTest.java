@@ -3,7 +3,7 @@ package sigmabot;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class EventTaskTest {
 
@@ -32,7 +32,7 @@ public class EventTaskTest {
     }
 
     @Test
-    public void decodeSaveFormatTest() {
+    public void decodeSaveFormatTest() throws SigmaBotReadSaveException {
         String encoded = "E,false,code,1212-12-12,0420-42-42";
         EventTask task = EventTask.decodeSaveFormat(encoded);
         
