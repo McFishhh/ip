@@ -8,7 +8,7 @@ public class DeadlineTask extends Task {
     protected LocalDate deadline;
 
     public static final Pattern DEADLINE_PATTERN = Pattern.compile(
-        "^(.*) /by (\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+        "^(.+?)\\s*/by\\s*(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\\s*$"
     );
 
     /**

@@ -7,7 +7,9 @@ public class EventTask extends Task {
     protected String start;
     protected String end;
 
-    public static final Pattern EVENT_PATTERN = Pattern.compile("^(.*) /from (.*) /to (.*)$");
+    public static final Pattern EVENT_PATTERN = Pattern.compile(
+        "^(.+?)\\s*/from\\s*(.+?)\\s*/to\\s*(.+?)\\s*$"
+    );
 
     /**
      * Helper method to extract event fields using regex.

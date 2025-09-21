@@ -16,3 +16,4 @@
 - help rename all occurances of duke and Duke to sigmaBot and SigmaBot for the JavaFX related classes
 - generate Regex for DeadlineTask and EventTask
 - generate README.md as per github official specifications
+- generate JUnit testcases for Storage.java

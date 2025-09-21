@@ -22,6 +22,7 @@ public class Parser {
 
         this.input = input;
         this.inputFirstWord = input.split(" ", 2)[0];
+        this.inputFirstWord.trim();
     }
 
     /**
@@ -79,6 +80,7 @@ public class Parser {
             throw new IllegalArgumentException("Input message and SigmaBot instance cannot be null");
         }
 
+        msg = msg.trim();
         String[] msgSplit = msg.split(" ", DEFAULT_SPLIT_LIMIT);
         String cleanedMsg = msg.toLowerCase().trim();
         setInput(cleanedMsg);
@@ -109,7 +111,8 @@ public class Parser {
             return task;
         }
         
-        task = createTaskFromInput(msgSplit[1]);
+        String description = msgSplit[1].trim();
+        task = createTaskFromInput(description);
 
         if (task == null || !task.isValid()) {
             return task;
