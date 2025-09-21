@@ -20,9 +20,8 @@ public class Parser {
             this.prevInput = this.input;
         } 
 
-        this.input = input;
-        this.inputFirstWord = input.split(" ", 2)[0];
-        this.inputFirstWord.trim();
+        this.input = input.trim();
+        this.inputFirstWord = input.trim().split(" ", 2)[0];
     }
 
     /**
@@ -148,7 +147,7 @@ public class Parser {
             return undo(bot);
         } else if (isFind() && msgSplit.length > 1) {
             return handleFindCommand(msgSplit, bot);
-        }
+        } 
         
         return task;
     }

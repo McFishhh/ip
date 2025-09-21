@@ -4,7 +4,7 @@
 
 SigmaBot is a desktop chatbot for managing tasks, optimized for fast command input with a modern GUI. You can quickly add todos, deadlines, and events, and manage them efficiently with simple commands!
 
-Note: Bro is nonchalant and mogging, and will ignore most invalid commands. 
+Note: Due to SigmaBot's nonchalant personality, he will ignore most invalid commands. 
 
 ---
 

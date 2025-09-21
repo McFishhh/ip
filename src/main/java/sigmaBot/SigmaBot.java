@@ -248,7 +248,7 @@ public class SigmaBot {
      * @return true if input was "bye" and shutdown was initiated, false otherwise
      */
     public boolean isBye(String input) {
-        if (input.equals("bye")) {
+        if (input.trim().equals("bye")) {
             try {
                 this.bye();
                 
